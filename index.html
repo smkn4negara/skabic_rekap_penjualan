@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>SKABIC — Rekap Keuangan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<style>
+  :root{
+    --ink:#1C2B3A;
+    --ink-soft:#5B6B7C;
+    --paper:#F1F3ED;
+    --paper-line:#DBDFD3;
+    --card:#FFFFFF;
+    --gold:#B8873A;
+    --gold-soft:#F1E4C6;
+    --navy-deep:#14202E;
+    --navy-deep-2:#1D2E42;
+    --danger:#B23A3A;
+    --hotel:#2C5F8A;
+    --hotel-bg:#E6EEF4;
+    --kuliner:#C1622B;
+    --kuliner-bg:#F7E7DC;
+    --kesehatan:#2F7865;
+    --kesehatan-bg:#E1EFEA;
+    --farmasi:#6B4C7A;
+    --farmasi-bg:#EAE2ED;
+    --radius:14px;
+    --shadow: 0 1px 2px rgba(20,32,46,0.06), 0 6px 20px rgba(20,32,46,0.07);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  #root{
+    max-width:480px;
+    margin:0 auto;
+    min-height:100vh;
+    background:var(--paper);
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    box-shadow: 0 0 40px rgba(20,32,46,0.08);
+  }
+  @media (min-width:520px){
+    body{ background: linear-gradient(180deg,#0E1A26,#233348 100%); padding:24px 0; }
+    #root{ min-height:calc(100vh - 48px); border-radius:22px; overflow:hidden; }
+  }
+
+  /* ---------- Header ---------- */
+  .topbar{
+    background: radial-gradient(120% 140% at 0% 0%, #223349 0%, var(--navy-deep) 60%);
+    color:#fff;
+    padding:22px 20px 20px;
+    position:relative;
+    overflow:hidden;
+  }
+  .topbar::after{
+    content:"";
+    position:absolute; inset:0;
+    background-image: repeating-linear-gradient(180deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 26px);
+    pointer-events:none;
+  }
+  .topbar-row{ display:flex; align-items:center; gap:12px; position:relative; z-index:1;}
+  .brand-mark{
+    width:46px;height:46px;border-radius:50%;
+    background: conic-gradient(from 200deg, var(--gold), #8a682b, var(--gold));
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fraunces',serif; font-weight:700; font-size:15px; color:#1a1204;
+    flex-shrink:0;
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,0.5), 0 3px 8px rgba(0,0,0,0.3);
+  }
+  .brand-mark img{ width:100%; height:100%; object-fit:cover; border-radius:50%; }
+  .brand-text h1{ font-family:'Fraunces',serif; font-weight:600; font-size:19px; margin:0; letter-spacing:0.2px;}
+  .brand-text p{ margin:1px 0 0; font-size:11.5px; color:#B9C4D2; letter-spacing:0.3px;}
+  .settings-btn{
+    margin-left:auto; flex-shrink:0; width:36px;height:36px;border-radius:50%;
+    background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.18);
+    display:flex;align-items:center;justify-content:center; cursor:pointer; color:#fff;
+  }
+  .settings-btn svg{ width:17px;height:17px; }
+  .settings-btn.active{ background:var(--gold); border-color:var(--gold); color:var(--navy-deep); }
+
+  .logo-preview-wrap{ display:flex; flex-direction:column; align-items:center; gap:12px; padding:10px 0 6px; }
+  .logo-preview{
+    width:112px; height:112px; border-radius:50%; overflow:hidden;
+    background: conic-gradient(from 200deg, var(--gold), #8a682b, var(--gold));
+    display:flex;align-items:center;justify-content:center;
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,0.6), 0 3px 10px rgba(20,32,46,0.18);
+  }
+  .logo-preview img{ width:100%; height:100%; object-fit:cover; }
+  .logo-preview .ph{ font-family:'Fraunces',serif; font-weight:700; font-size:24px; color:#1a1204; }
+  .file-label{
+    display:inline-flex; align-items:center; justify-content:center; gap:6px;
+    border:1.5px solid var(--navy-deep); border-radius:11px; padding:11px 16px;
+    background:#fff; color:var(--navy-deep); font-weight:700; font-size:13.5px; cursor:pointer;
+    font-family:'Inter',sans-serif; width:100%;
+  }
+  .file-label svg{ width:16px;height:16px; }
+  .btn-danger-text{
+    width:100%; border:none; background:transparent; color:var(--danger); font-weight:600;
+    font-size:12.5px; padding:10px; cursor:pointer; font-family:'Inter',sans-serif;
+  }
+  .topbar-summary{
+    position:relative; z-index:1;
+    margin-top:18px;
+    display:flex; gap:10px;
+  }
+  .sum-card{
+    flex:1; background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:12px; padding:10px 12px;
+  }
+  .sum-card .lbl{ font-size:10.5px; color:#9FB0C2; text-transform:uppercase; letter-spacing:0.6px;}
+  .sum-card .val{ font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:15px; margin-top:3px; color:#F4EBD6;}
+
+  /* ---------- Nav ---------- */
+  .bottom-nav{
+    position:sticky; bottom:0;
+    display:flex;
+    background:#fff;
+    border-top:1px solid var(--paper-line);
+    padding:6px 8px calc(env(safe-area-inset-bottom,0px) + 6px);
+    gap:4px;
+    z-index:5;
+  }
+  .nav-btn{
+    flex:1; border:none; background:transparent; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+    padding:8px 4px 6px; border-radius:10px; color:var(--ink-soft);
+    font-family:'Inter',sans-serif; font-size:11px; font-weight:600;
+    transition: color .15s, background .15s;
+  }
+  .nav-btn svg{ width:20px; height:20px; }
+  .nav-btn.active{ color:var(--navy-deep); background:var(--gold-soft); }
+  .nav-btn.active svg{ stroke:var(--navy-deep); }
+
+  main{ flex:1; padding:16px 16px 20px; overflow-y:auto; }
+
+  h2.section-title{
+    font-family:'Fraunces',serif; font-weight:600; font-size:18px; margin:2px 0 3px;
+  }
+  p.section-sub{ font-size:12.5px; color:var(--ink-soft); margin:0 0 16px; }
+
+  /* ---------- Cards / Forms ---------- */
+  .card{
+    background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow);
+    padding:16px; margin-bottom:14px; border:1px solid rgba(20,32,46,0.04);
+  }
+  label.field-label{
+    display:block; font-size:11.5px; font-weight:600; color:var(--ink-soft);
+    text-transform:uppercase; letter-spacing:0.5px; margin:0 0 8px;
+  }
+  .jurusan-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:6px;}
+  .jurusan-grid.has-error{ outline:1.5px dashed var(--danger); outline-offset:6px; border-radius:12px; }
+  .field-error{ color:var(--danger); font-size:11.5px; font-weight:600; margin:0 0 14px; }
+  input.has-error{ border-color:var(--danger) !important; background:#FBF0F0; }
+  .jurusan-opt{
+    border:1.5px solid var(--paper-line); border-radius:11px; padding:10px 10px;
+    display:flex; align-items:center; gap:8px; cursor:pointer; background:#fff;
+    transition: border-color .15s, background .15s, transform .1s;
+  }
+  .jurusan-opt:active{ transform:scale(0.98); }
+  .jurusan-opt.selected{ border-color: var(--sel-color, var(--gold)); background: var(--sel-bg, var(--gold-soft)); }
+  .j-badge{
+    width:30px;height:30px;border-radius:50%; flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:11px; color:#fff;
+  }
+  .j-name{ font-size:12.5px; font-weight:600; line-height:1.25; }
+
+  input[type=date], input[type=text], input[type=number], select{
+    width:100%; border:1.5px solid var(--paper-line); border-radius:10px;
+    padding:11px 12px; font-size:14.5px; font-family:'IBM Plex Mono',monospace;
+    background:#fff; color:var(--ink); outline:none;
+  }
+  input[type=date]:focus, input[type=text]:focus, input[type=number]:focus, select:focus{
+    border-color:var(--navy-deep);
+  }
+  .field{ margin-bottom:14px; }
+  .rp-preview{ font-size:11.5px; color:var(--gold); margin-top:5px; font-weight:600; font-family:'IBM Plex Mono',monospace;}
+
+  .btn-primary{
+    width:100%; border:none; border-radius:11px; padding:13px 16px;
+    background: linear-gradient(180deg,#223349,var(--navy-deep));
+    color:#fff; font-weight:700; font-size:14px; cursor:pointer;
+    font-family:'Inter',sans-serif; letter-spacing:0.2px;
+    box-shadow: 0 4px 12px rgba(20,32,46,0.25);
+  }
+  .btn-primary:active{ transform: translateY(1px); }
+  .btn-secondary{
+    width:100%; border:1.5px solid var(--navy-deep); border-radius:11px; padding:11px 16px;
+    background:#fff; color:var(--navy-deep); font-weight:700; font-size:13.5px; cursor:pointer;
+    font-family:'Inter',sans-serif; display:flex; align-items:center; justify-content:center; gap:6px;
+  }
+  .btn-secondary svg{ width:16px; height:16px; }
+
+  .toast{
+    position:fixed; left:50%; bottom:78px; transform:translateX(-50%) translateY(10px);
+    background:var(--navy-deep); color:#fff; padding:10px 18px; border-radius:999px;
+    font-size:13px; font-weight:600; box-shadow:0 8px 20px rgba(0,0,0,0.25);
+    opacity:0; pointer-events:none; transition:opacity .25s, transform .25s;
+    z-index:50; white-space:nowrap;
+  }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  /* ---------- Riwayat ---------- */
+  .filter-row{ display:flex; gap:8px; margin-bottom:14px; }
+  .filter-row select{ font-family:'Inter',sans-serif; font-weight:600; font-size:12.5px; padding:9px 10px;}
+
+  .mode-tabs{
+    display:flex; background:#fff; border:1.5px solid var(--paper-line); border-radius:12px;
+    padding:3px; margin-bottom:14px; gap:2px;
+  }
+  .mode-tab{
+    flex:1; text-align:center; padding:10px 6px; border-radius:9px; border:none;
+    font-size:12.5px; font-weight:700; color:var(--ink-soft); cursor:pointer;
+    font-family:'Inter',sans-serif; background:transparent; transition: background .15s, color .15s;
+  }
+  .mode-tab.active{ background:var(--navy-deep); color:#fff; }
+
+  .date-group{ margin-bottom:14px; }
+  .date-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:2px 2px 8px;
+  }
+  .date-head .d-label{ font-family:'Fraunces',serif; font-weight:600; font-size:14.5px;}
+  .date-head .d-sub{ font-size:10.5px; color:var(--ink-soft); }
+  .entry-row{
+    display:flex; align-items:center; gap:10px; padding:10px 4px;
+    border-bottom:1px dashed var(--paper-line);
+  }
+  .entry-row:last-child{ border-bottom:none; }
+  .entry-info{ flex:1; min-width:0; }
+  .entry-jname{ font-size:12.5px; font-weight:700; }
+  .entry-figures{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft); margin-top:2px; }
+  .entry-figures b{ color:var(--ink); font-weight:600; }
+  .del-btn{
+    border:none; background:transparent; color:#C9CFD6; cursor:pointer; padding:6px;
+    display:flex;
+  }
+  .del-btn:hover{ color:var(--danger); }
+  .del-btn svg{ width:16px;height:16px; }
+
+  .day-total{
+    display:flex; justify-content:space-between; align-items:center;
+    background:var(--gold-soft); border-radius:9px; padding:9px 12px; margin:10px 0 10px;
+  }
+  .day-total .t-lbl{ font-size:11px; font-weight:700; color:#7A5A22; text-transform:uppercase; letter-spacing:0.4px;}
+  .day-total .t-val{ font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:13.5px; color:#5C3F14;}
+
+  .stamp{
+    width:104px;height:104px; margin:6px auto 4px; position:relative;
+  }
+  .stamp svg{ width:100%; height:100%; }
+
+  .empty-state{
+    text-align:center; padding:40px 10px; color:var(--ink-soft);
+  }
+  .empty-state svg{ width:52px;height:52px; margin-bottom:10px; opacity:0.5;}
+  .empty-state p{ font-size:13px; margin:0; }
+
+  /* ---------- Rekap ---------- */
+  .range-row{ display:flex; gap:8px; align-items:flex-end; }
+  .range-row .field{ flex:1; margin-bottom:0; }
+
+  table.rekap-table{ width:100%; border-collapse:collapse; margin-top:6px; }
+  table.rekap-table th{
+    text-align:left; font-size:10px; text-transform:uppercase; letter-spacing:0.4px;
+    color:var(--ink-soft); padding:6px 6px; border-bottom:1.5px solid var(--paper-line);
+  }
+  table.rekap-table td{
+    padding:8px 6px; font-size:12px; border-bottom:1px dashed var(--paper-line);
+    font-family:'IBM Plex Mono',monospace;
+  }
+  table.rekap-table td.jname{ font-family:'Inter',sans-serif; font-weight:700; font-size:12px; }
+  table.rekap-table tr.total-row td{
+    border-top:1.5px solid var(--ink); border-bottom:none; font-weight:700; padding-top:9px;
+  }
+  .chip{
+    display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:700;
+  }
+  .dot{ width:8px;height:8px;border-radius:50%; }
+
+  .section-gap{ height:6px; }
+  .hint{ font-size:11px; color:var(--ink-soft); margin-top:6px; line-height:1.5;}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script>
+/* ============ CONFIG ============ */
+const JURUSAN = [
+  { key:'hotel',     label:'Perhotelan',        initial:'P',  color:'var(--hotel)',     bg:'var(--hotel-bg)' },
+  { key:'kuliner',   label:'Kuliner',           initial:'K',  color:'var(--kuliner)',   bg:'var(--kuliner-bg)' },
+  { key:'kesehatan', label:'Layanan Kesehatan', initial:'LK', color:'var(--kesehatan)', bg:'var(--kesehatan-bg)' },
+  { key:'farmasi',   label:'Farmasi',           initial:'F',  color:'var(--farmasi)',   bg:'var(--farmasi-bg)' },
+];
+const jMap = Object.fromEntries(JURUSAN.map(j=>[j.key,j]));
+
+const ICONS = {
+  input: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>`,
+  riwayat: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>`,
+  rekap: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 3v4M16 3v4M8 14h2M14 14h2M8 17h2M14 17h2"/></svg>`,
+  download: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>`,
+  trash: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2m2 0l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>`,
+  empty: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20V7a2 2 0 012-2h6l4 4h2a2 2 0 012 2v9a2 2 0 01-2 2H6a2 2 0 01-2-2z"/></svg>`,
+  gear: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.6 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.6a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>`,
+  upload: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V9m0 0l-4 4m4-4l4 4"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>`,
+};
+
+/* ============ STATE ============ */
+let state = {
+  currentView: 'input',
+  loading: true,
+  entries: [],
+  logo: null,
+  form: { jurusan:null, tanggal: todayStr(), kotor:'', untung:'' },
+  formErrors: {},
+  filterJurusan: 'semua',
+  rekapMode: 'harian',
+  rekapTanggal: todayStr(),
+  rekapHarianResult: null,
+  rekapFrom:'', rekapTo:'', rekapResult:null,
+};
+
+function todayStr(){
+  const d = new Date();
+  const off = d.getTimezoneOffset();
+  const local = new Date(d.getTime() - off*60000);
+  return local.toISOString().slice(0,10);
+}
+function formatRp(n){
+  n = Number(n)||0;
+  return 'Rp ' + n.toLocaleString('id-ID');
+}
+function formatTanggalPanjang(dstr){
+  const d = new Date(dstr+'T00:00:00');
+  return d.toLocaleDateString('id-ID', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+}
+function formatTanggalPendek(dstr){
+  const d = new Date(dstr+'T00:00:00');
+  return d.toLocaleDateString('id-ID', { day:'2-digit', month:'short', year:'numeric' });
+}
+function uid(){ return 'e' + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+/* ============ STORAGE ============ */
+async function loadAll(){
+  try{
+    const res = await window.storage.get('skabic-entries', true);
+    state.entries = res && res.value ? JSON.parse(res.value) : [];
+  }catch(e){
+    state.entries = [];
+  }
+  try{
+    const res = await window.storage.get('skabic-logo', true);
+    state.logo = res && res.value ? res.value : null;
+  }catch(e){
+    state.logo = null;
+  }
+  state.loading = false;
+  render();
+}
+async function persistEntries(){
+  try{
+    await window.storage.set('skabic-entries', JSON.stringify(state.entries), true);
+  }catch(e){
+    showToast('Gagal menyimpan ke server, coba lagi.');
+  }
+}
+async function saveLogo(dataUrl){
+  try{
+    await window.storage.set('skabic-logo', dataUrl, true);
+    return true;
+  }catch(e){
+    showToast('Gagal mengunggah logo, coba lagi.');
+    return false;
+  }
+}
+async function removeLogo(){
+  try{
+    await window.storage.delete('skabic-logo', true);
+  }catch(e){ /* key may already be absent */ }
+  state.logo = null;
+  render();
+  showToast('Logo dihapus');
+}
+function resizeLogoFile(file){
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onload = (ev)=>{
+      const img = new Image();
+      img.onload = ()=>{
+        const size = 240;
+        const canvas = document.createElement('canvas');
+        canvas.width = size; canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        const scale = Math.min(size/img.width, size/img.height);
+        const w = img.width*scale, h = img.height*scale;
+        const x = (size-w)/2, y = (size-h)/2;
+        ctx.clearRect(0,0,size,size);
+        ctx.drawImage(img, x, y, w, h);
+        resolve(canvas.toDataURL('image/png'));
+      };
+      img.onerror = ()=> reject(new Error('Gambar tidak dapat dibaca'));
+      img.src = ev.target.result;
+    };
+    reader.onerror = ()=> reject(new Error('File tidak dapat dibaca'));
+    reader.readAsDataURL(file);
+  });
+}
+async function handleLogoUpload(file){
+  if(!file) return;
+  if(!file.type.startsWith('image/')){ showToast('File harus berupa gambar'); return; }
+  try{
+    const dataUrl = await resizeLogoFile(file);
+    const ok = await saveLogo(dataUrl);
+    if(ok){
+      state.logo = dataUrl;
+      render();
+      showToast('Logo berhasil diperbarui');
+    }
+  }catch(e){
+    showToast('Gagal memproses gambar');
+  }
+}
+
+/* ============ TOAST ============ */
+function showToast(msg){
+  const t = document.getElementById('toast');
+  if(!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(()=> t.classList.remove('show'), 2200);
+}
+
+/* ============ ACTIONS ============ */
+function setView(v){ state.currentView = v; if(v==='rekap'){ state.rekapResult=null; state.rekapHarianResult=null; } render(); }
+
+function selectJurusan(key){ state.form.jurusan = key; if(state.formErrors.jurusan){ delete state.formErrors.jurusan; } render(); }
+
+function updateField(field, val){
+  state.form[field] = val;
+  if(state.formErrors[field]){
+    delete state.formErrors[field];
+    clearFieldErrorUI(field);
+  }
+  renderRpPreview();
+}
+
+function clearFieldErrorUI(field){
+  const inputIdMap = { tanggal:'tanggal-input', kotor:'kotor-input', untung:'untung-input' };
+  const inputId = inputIdMap[field];
+  if(inputId){
+    const el = document.getElementById(inputId);
+    if(el) el.classList.remove('has-error');
+  }
+  const errEl = document.getElementById('error-'+field);
+  if(errEl) errEl.remove();
+}
+
+function renderRpPreview(){
+  const kEl = document.getElementById('kotor-preview');
+  const uEl = document.getElementById('untung-preview');
+  if(kEl) kEl.textContent = state.form.kotor ? formatRp(state.form.kotor) : '';
+  if(uEl) uEl.textContent = state.form.untung ? formatRp(state.form.untung) : '';
+}
+
+async function submitEntry(){
+  const f = state.form;
+  const errors = {};
+  if(!f.jurusan) errors.jurusan = 'Pilih salah satu jurusan terlebih dahulu.';
+  if(!f.tanggal) errors.tanggal = 'Tanggal wajib diisi.';
+  const kotor = Number(f.kotor);
+  const untung = Number(f.untung);
+  if(f.kotor === '' || isNaN(kotor) || kotor < 0) errors.kotor = 'Omzet wajib diisi dengan angka yang benar.';
+  if(f.untung === '' || isNaN(untung) || untung < 0) errors.untung = 'Laba Bersih wajib diisi dengan angka yang benar.';
+
+  if(Object.keys(errors).length > 0){
+    state.formErrors = errors;
+    render();
+    if(errors.jurusan){
+      showToast('Pilih jurusan terlebih dahulu sebelum menyimpan');
+    }else{
+      showToast('Lengkapi semua isian sebelum menyimpan');
+    }
+    return;
+  }
+
+  state.formErrors = {};
+  state.entries.push({
+    id: uid(), jurusan: f.jurusan, tanggal: f.tanggal,
+    kotor: kotor, untung: untung, createdAt: Date.now()
+  });
+  await persistEntries();
+  showToast('Data berhasil disimpan');
+  state.form = { jurusan:null, tanggal: f.tanggal, kotor:'', untung:'' };
+  render();
+}
+
+async function deleteEntry(id){
+  state.entries = state.entries.filter(e=>e.id!==id);
+  await persistEntries();
+  render();
+  showToast('Data dihapus');
+}
+
+function setFilterJurusan(val){ state.filterJurusan = val; render(); }
+
+function setRekapMode(mode){
+  state.rekapMode = mode;
+  state.rekapResult = null;
+  state.rekapHarianResult = null;
+  render();
+}
+
+function setRekapHarianTanggal(val){ state.rekapTanggal = val; }
+
+function tampilkanRekapHarian(){
+  if(!state.rekapTanggal){ showToast('Pilih tanggal terlebih dahulu'); return; }
+  state.rekapHarianResult = state.entries.filter(e => e.tanggal === state.rekapTanggal);
+  render();
+}
+
+function setRekapDate(field, val){ state[field] = val; }
+
+function tampilkanRekap(){
+  if(!state.rekapFrom || !state.rekapTo){ showToast('Pilih tanggal dari & sampai'); return; }
+  if(state.rekapFrom > state.rekapTo){ showToast('Tanggal "dari" tidak boleh setelah "sampai"'); return; }
+  const filtered = state.entries.filter(e => e.tanggal >= state.rekapFrom && e.tanggal <= state.rekapTo);
+  state.rekapResult = filtered;
+  render();
+}
+
+/* ============ PDF GENERATION ============ */
+function pdfHeader(doc, title, subtitle){
+  doc.setFillColor(20,32,46);
+  doc.rect(0,0,210,26,'F');
+  const textStartX = state.logo ? 32 : 14;
+  if(state.logo){
+    try{ doc.addImage(state.logo, 'PNG', 14, 5, 16, 16); }catch(e){ /* ignore malformed image */ }
+  }
+  doc.setTextColor(255,255,255);
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(14);
+  doc.text('SKABIC — Skanepa Business Center', textStartX, 12);
+  doc.setFontSize(9.5);
+  doc.setFont('helvetica','normal');
+  doc.setTextColor(200,210,220);
+  doc.text('Sistem Rekap Data Keuangan Unit Usaha Sekolah', textStartX, 18);
+  doc.setTextColor(30,30,30);
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(12.5);
+  doc.text(title, 14, 34);
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(9.5);
+  doc.setTextColor(90,90,90);
+  doc.text(subtitle, 14, 40);
+}
+function pdfFooter(doc){
+  const pageCount = doc.internal.getNumberOfPages();
+  for(let i=1;i<=pageCount;i++){
+    doc.setPage(i);
+    doc.setFontSize(8);
+    doc.setTextColor(150,150,150);
+    doc.text('Dicetak otomatis oleh Aplikasi Rekap Keuangan SKABIC — ' + new Date().toLocaleString('id-ID'), 14, 289);
+  }
+}
+
+function generateHarianPDF(tanggal, entries){
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  pdfHeader(doc, 'Rekap Keuangan Harian', formatTanggalPanjang(tanggal));
+
+  const rows = entries.map(e => [
+    jMap[e.jurusan].label,
+    formatRp(e.kotor),
+    formatRp(e.untung),
+    (e.kotor>0 ? ((e.untung/e.kotor)*100).toFixed(1)+'%' : '-')
+  ]);
+  const totalKotor = entries.reduce((s,e)=>s+e.kotor,0);
+  const totalUntung = entries.reduce((s,e)=>s+e.untung,0);
+  rows.push(['TOTAL', formatRp(totalKotor), formatRp(totalUntung), totalKotor>0 ? ((totalUntung/totalKotor)*100).toFixed(1)+'%' : '-']);
+
+  doc.autoTable({
+    startY: 46,
+    head: [['Jurusan','Omzet','Laba Bersih','Margin']],
+    body: rows,
+    theme: 'grid',
+    headStyles:{ fillColor:[28,43,58], textColor:255, fontSize:9.5 },
+    bodyStyles:{ fontSize:9.5 },
+    didParseCell: (data)=>{
+      if(data.row.index === rows.length-1 && data.section==='body'){
+        data.cell.styles.fontStyle = 'bold';
+        data.cell.styles.fillColor = [241,228,198];
+      }
+    }
+  });
+  pdfFooter(doc);
+  doc.save(`SKABIC-Harian-${tanggal}.pdf`);
+}
+
+function generateRekapPDF(from, to, entries){
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  pdfHeader(doc, 'Rekap Keuangan Periode', `${formatTanggalPendek(from)} — ${formatTanggalPendek(to)}`);
+
+  const agg = {};
+  JURUSAN.forEach(j => agg[j.key] = { jumlah:0, kotor:0, untung:0 });
+  entries.forEach(e => { agg[e.jurusan].jumlah++; agg[e.jurusan].kotor += e.kotor; agg[e.jurusan].untung += e.untung; });
+
+  const summaryRows = JURUSAN.map(j => [
+    j.label, String(agg[j.key].jumlah), formatRp(agg[j.key].kotor), formatRp(agg[j.key].untung)
+  ]);
+  const grandKotor = entries.reduce((s,e)=>s+e.kotor,0);
+  const grandUntung = entries.reduce((s,e)=>s+e.untung,0);
+  summaryRows.push(['TOTAL KESELURUHAN', String(entries.length), formatRp(grandKotor), formatRp(grandUntung)]);
+
+  doc.autoTable({
+    startY: 46,
+    head: [['Jurusan','Jml Transaksi','Total Omzet','Total Laba Bersih']],
+    body: summaryRows,
+    theme: 'grid',
+    headStyles:{ fillColor:[28,43,58], textColor:255, fontSize:9.5 },
+    bodyStyles:{ fontSize:9.5 },
+    didParseCell: (data)=>{
+      if(data.row.index === summaryRows.length-1 && data.section==='body'){
+        data.cell.styles.fontStyle = 'bold';
+        data.cell.styles.fillColor = [241,228,198];
+      }
+    }
+  });
+
+  const detailStartY = doc.lastAutoTable.finalY + 10;
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(11);
+  doc.setTextColor(30,30,30);
+  doc.text('Rincian Transaksi Harian', 14, detailStartY);
+
+  const sorted = [...entries].sort((a,b)=> a.tanggal.localeCompare(b.tanggal) || a.jurusan.localeCompare(b.jurusan));
+  const detailRows = sorted.map(e => [
+    formatTanggalPendek(e.tanggal), jMap[e.jurusan].label, formatRp(e.kotor), formatRp(e.untung)
+  ]);
+
+  doc.autoTable({
+    startY: detailStartY + 4,
+    head: [['Tanggal','Jurusan','Omzet','Laba Bersih']],
+    body: detailRows.length ? detailRows : [['-','Tidak ada data','-','-']],
+    theme: 'striped',
+    headStyles:{ fillColor:[80,90,102], textColor:255, fontSize:8.5 },
+    bodyStyles:{ fontSize:8.5 },
+  });
+
+  pdfFooter(doc);
+  doc.save(`SKABIC-Rekap-${from}_${to}.pdf`);
+}
+
+/* ============ RENDER: SHELL ============ */
+function render(){
+  const root = document.getElementById('root');
+  const todayEntries = state.entries.filter(e=>e.tanggal===todayStr());
+  const todayKotor = todayEntries.reduce((s,e)=>s+e.kotor,0);
+  const todayUntung = todayEntries.reduce((s,e)=>s+e.untung,0);
+
+  root.innerHTML = `
+    <div class="topbar">
+      <div class="topbar-row">
+        <div class="brand-mark">SB</div>
+        <div class="brand-text">
+          <h1>SKABIC</h1>
+          <p>Skanepa Business Center — Rekap Keuangan</p>
+        </div>
+        <button class="settings-btn ${state.currentView==='settings'?'active':''}" id="settings-btn" title="Pengaturan">${ICONS.gear}</button>
+      </div>
+      <div class="topbar-summary">
+        <div class="sum-card"><div class="lbl">Omzet Hari Ini</div><div class="val">${formatRp(todayKotor)}</div></div>
+        <div class="sum-card"><div class="lbl">Laba Bersih Hari Ini</div><div class="val">${formatRp(todayUntung)}</div></div>
+      </div>
+    </div>
+    <main id="main-view"></main>
+    <div class="bottom-nav">
+      <button class="nav-btn ${state.currentView==='input'?'active':''}" data-nav="input">${ICONS.input}<span>Input</span></button>
+      <button class="nav-btn ${state.currentView==='riwayat'?'active':''}" data-nav="riwayat">${ICONS.riwayat}<span>Riwayat</span></button>
+      <button class="nav-btn ${state.currentView==='rekap'?'active':''}" data-nav="rekap">${ICONS.rekap}<span>Rekap &amp; Unduh</span></button>
+    </div>
+    <div class="toast" id="toast"></div>
+  `;
+  root.querySelectorAll('[data-nav]').forEach(btn=>{
+    btn.addEventListener('click', ()=> setView(btn.getAttribute('data-nav')));
+  });
+  document.getElementById('settings-btn').addEventListener('click', ()=> setView('settings'));
+
+  const mv = document.getElementById('main-view');
+  if(state.loading){
+    mv.innerHTML = `<div class="empty-state"><p>Memuat data…</p></div>`;
+    return;
+  }
+  if(state.currentView==='input') renderInputView(mv);
+  if(state.currentView==='riwayat') renderRiwayatView(mv);
+  if(state.currentView==='rekap') renderRekapView(mv);
+  if(state.currentView==='settings') renderSettingsView(mv);
+}
+
+/* ============ RENDER: SETTINGS ============ */
+function renderSettingsView(mv){
+  mv.innerHTML = `
+    <h2 class="section-title">Pengaturan</h2>
+    <p class="section-sub">Unggah logo SKABIC untuk ditampilkan pada header setiap laporan PDF yang diunduh.</p>
+    <div class="card">
+      <div class="logo-preview-wrap">
+        <div class="logo-preview">
+          ${state.logo ? `<img src="${state.logo}" alt="Logo SKABIC">` : `<span class="ph">SB</span>`}
+        </div>
+        <label class="file-label" for="logo-file">${ICONS.upload} ${state.logo ? 'Ganti Logo' : 'Unggah Logo'}</label>
+        <input type="file" id="logo-file" accept="image/*" style="display:none">
+        ${state.logo ? `<button class="btn-danger-text" id="logo-remove">Hapus Logo</button>` : ''}
+      </div>
+      <p class="hint">Format JPG/PNG, akan disesuaikan otomatis. Logo ini tersimpan bersama (shared) dan akan terlihat oleh semua orang yang membuka aplikasi ini — bukan hanya kamu.</p>
+    </div>
+  `;
+  document.getElementById('logo-file').addEventListener('change', (e)=>{
+    const file = e.target.files[0];
+    handleLogoUpload(file);
+  });
+  const removeBtn = document.getElementById('logo-remove');
+  if(removeBtn){
+    removeBtn.addEventListener('click', ()=>{
+      if(confirm('Hapus logo SKABIC dari aplikasi?')) removeLogo();
+    });
+  }
+}
+
+/* ============ RENDER: INPUT ============ */
+function renderInputView(mv){
+  mv.innerHTML = `
+    <h2 class="section-title">Input Data Penjualan</h2>
+    <p class="section-sub">Catat Omzet dan Laba Bersih harian dari tiap jurusan.</p>
+    <div class="card">
+      <label class="field-label">Pilih Jurusan</label>
+      <div class="jurusan-grid" id="jurusan-grid">
+        ${JURUSAN.map(j=>`
+          <div class="jurusan-opt ${state.form.jurusan===j.key?'selected':''}" data-j="${j.key}"
+               style="--sel-color:${j.color};--sel-bg:${j.bg}">
+            <div class="j-badge" style="background:${j.color}">${j.initial}</div>
+            <div class="j-name">${j.label}</div>
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="field">
+        <label class="field-label">Tanggal Input</label>
+        <input type="date" id="tanggal-input" value="${state.form.tanggal}">
+      </div>
+
+      <div class="field">
+        <label class="field-label">Omzet (Rp)</label>
+        <input type="number" inputmode="numeric" min="0" id="kotor-input" placeholder="cth. 500000" value="${state.form.kotor}">
+        <div class="rp-preview" id="kotor-preview">${state.form.kotor?formatRp(state.form.kotor):''}</div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Laba Bersih (Rp)</label>
+        <input type="number" inputmode="numeric" min="0" id="untung-input" placeholder="cth. 150000" value="${state.form.untung}">
+        <div class="rp-preview" id="untung-preview">${state.form.untung?formatRp(state.form.untung):''}</div>
+      </div>
+
+      <button class="btn-primary" id="submit-btn">Simpan Data</button>
+      <p class="hint">Data akan langsung masuk ke menu Riwayat dan bisa direkap sesuai rentang tanggal di menu Rekap &amp; Unduh.</p>
+    </div>
+  `;
+  mv.querySelectorAll('[data-j]').forEach(el=>{
+    el.addEventListener('click', ()=> selectJurusan(el.getAttribute('data-j')));
+  });
+  document.getElementById('tanggal-input').addEventListener('change', e=> updateField('tanggal', e.target.value));
+  document.getElementById('kotor-input').addEventListener('input', e=> updateField('kotor', e.target.value));
+  document.getElementById('untung-input').addEventListener('input', e=> updateField('untung', e.target.value));
+  document.getElementById('submit-btn').addEventListener('click', submitEntry);
+}
+
+/* ============ RENDER: RIWAYAT ============ */
+function renderRiwayatView(mv){
+  let entries = [...state.entries];
+  if(state.filterJurusan !== 'semua'){
+    entries = entries.filter(e=>e.jurusan===state.filterJurusan);
+  }
+  entries.sort((a,b)=> b.tanggal.localeCompare(a.tanggal) || b.createdAt-a.createdAt);
+
+  const dates = [...new Set(entries.map(e=>e.tanggal))];
+
+  mv.innerHTML = `
+    <h2 class="section-title">Riwayat Transaksi</h2>
+    <p class="section-sub">Rekap data yang tersimpan, dikelompokkan per tanggal.</p>
+    <div class="filter-row">
+      <select id="filter-select" style="flex:1">
+        <option value="semua" ${state.filterJurusan==='semua'?'selected':''}>Semua Jurusan</option>
+        ${JURUSAN.map(j=>`<option value="${j.key}" ${state.filterJurusan===j.key?'selected':''}>${j.label}</option>`).join('')}
+      </select>
+    </div>
+    <div id="riwayat-list"></div>
+  `;
+  document.getElementById('filter-select').addEventListener('change', e=> setFilterJurusan(e.target.value));
+
+  const list = document.getElementById('riwayat-list');
+  if(dates.length===0){
+    list.innerHTML = `<div class="empty-state">${ICONS.empty}<p>Belum ada data untuk ditampilkan.</p></div>`;
+    return;
+  }
+
+  list.innerHTML = dates.map(dstr=>{
+    const dayEntries = entries.filter(e=>e.tanggal===dstr);
+    const totalKotor = dayEntries.reduce((s,e)=>s+e.kotor,0);
+    const totalUntung = dayEntries.reduce((s,e)=>s+e.untung,0);
+    return `
+      <div class="card date-group">
+        <div class="date-head">
+          <div>
+            <div class="d-label">${formatTanggalPanjang(dstr)}</div>
+            <div class="d-sub">${dayEntries.length} transaksi</div>
+          </div>
+        </div>
+        ${dayEntries.map(e=>`
+          <div class="entry-row">
+            <div class="j-badge" style="background:${jMap[e.jurusan].color};width:26px;height:26px;font-size:10px;">${jMap[e.jurusan].initial}</div>
+            <div class="entry-info">
+              <div class="entry-jname">${jMap[e.jurusan].label}</div>
+              <div class="entry-figures">Omzet <b>${formatRp(e.kotor)}</b> · Laba Bersih <b>${formatRp(e.untung)}</b></div>
+            </div>
+            <button class="del-btn" data-del="${e.id}">${ICONS.trash}</button>
+          </div>
+        `).join('')}
+        <div class="day-total">
+          <div class="t-lbl">Total Hari Ini</div>
+          <div class="t-val">${formatRp(totalKotor)} · ${formatRp(totalUntung)}</div>
+        </div>
+        <button class="btn-secondary" data-download="${dstr}">${ICONS.download} Unduh PDF Harian</button>
+      </div>
+    `;
+  }).join('');
+
+  list.querySelectorAll('[data-del]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      if(confirm('Hapus data transaksi ini?')) deleteEntry(btn.getAttribute('data-del'));
+    });
+  });
+  list.querySelectorAll('[data-download]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const dstr = btn.getAttribute('data-download');
+      const dayEntries = state.entries.filter(e=>e.tanggal===dstr);
+      generateHarianPDF(dstr, dayEntries);
+    });
+  });
+}
+
+/* ============ RENDER: REKAP ============ */
+function renderRekapView(mv){
+  mv.innerHTML = `
+    <h2 class="section-title">Rekap &amp; Unduh Laporan</h2>
+    <p class="section-sub">Pilih rekap harian untuk satu tanggal, atau rekap periode untuk rentang beberapa hari.</p>
+    <div class="mode-tabs">
+      <button class="mode-tab ${state.rekapMode==='harian'?'active':''}" data-mode="harian">Rekap Harian</button>
+      <button class="mode-tab ${state.rekapMode==='periode'?'active':''}" data-mode="periode">Rekap Periode</button>
+    </div>
+    <div id="rekap-controls"></div>
+    <div id="rekap-result"></div>
+  `;
+  mv.querySelectorAll('[data-mode]').forEach(btn=>{
+    btn.addEventListener('click', ()=> setRekapMode(btn.getAttribute('data-mode')));
+  });
+
+  const controls = document.getElementById('rekap-controls');
+  if(state.rekapMode === 'harian'){
+    controls.innerHTML = `
+      <div class="card">
+        <div class="field">
+          <label class="field-label">Pilih Tanggal</label>
+          <input type="date" id="rekap-tanggal" value="${state.rekapTanggal}">
+        </div>
+        <button class="btn-primary" id="rekap-harian-btn">Tampilkan Rekap Harian</button>
+      </div>
+    `;
+    document.getElementById('rekap-tanggal').addEventListener('change', e=> setRekapHarianTanggal(e.target.value));
+    document.getElementById('rekap-harian-btn').addEventListener('click', tampilkanRekapHarian);
+  }else{
+    controls.innerHTML = `
+      <div class="card">
+        <div class="range-row">
+          <div class="field">
+            <label class="field-label">Dari Tanggal</label>
+            <input type="date" id="rekap-from" value="${state.rekapFrom}">
+          </div>
+          <div class="field">
+            <label class="field-label">Sampai Tanggal</label>
+            <input type="date" id="rekap-to" value="${state.rekapTo}">
+          </div>
+        </div>
+        <div style="height:14px"></div>
+        <button class="btn-primary" id="rekap-btn">Tampilkan Rekap</button>
+      </div>
+    `;
+    document.getElementById('rekap-from').addEventListener('change', e=> setRekapDate('rekapFrom', e.target.value));
+    document.getElementById('rekap-to').addEventListener('change', e=> setRekapDate('rekapTo', e.target.value));
+    document.getElementById('rekap-btn').addEventListener('click', tampilkanRekap);
+  }
+
+  const resultEl = document.getElementById('rekap-result');
+  if(state.rekapMode === 'harian'){
+    renderRekapHarianResult(resultEl);
+  }else{
+    renderRekapPeriodeResult(resultEl);
+  }
+}
+
+function aggregateByJurusan(entries){
+  const agg = {};
+  JURUSAN.forEach(j => agg[j.key] = { jumlah:0, kotor:0, untung:0 });
+  entries.forEach(e => { agg[e.jurusan].jumlah++; agg[e.jurusan].kotor += e.kotor; agg[e.jurusan].untung += e.untung; });
+  return agg;
+}
+
+function renderAggTable(agg, entries){
+  const grandKotor = entries.reduce((s,e)=>s+e.kotor,0);
+  const grandUntung = entries.reduce((s,e)=>s+e.untung,0);
+  return `
+    <table class="rekap-table">
+      <thead><tr><th>Jurusan</th><th>Trx</th><th>Omzet</th><th>Laba Bersih</th></tr></thead>
+      <tbody>
+        ${JURUSAN.map(j=>`
+          <tr>
+            <td class="jname"><span class="chip"><span class="dot" style="background:${j.color}"></span>${j.label}</span></td>
+            <td>${agg[j.key].jumlah}</td>
+            <td>${formatRp(agg[j.key].kotor)}</td>
+            <td>${formatRp(agg[j.key].untung)}</td>
+          </tr>
+        `).join('')}
+        <tr class="total-row">
+          <td class="jname">Total</td>
+          <td>${entries.length}</td>
+          <td>${formatRp(grandKotor)}</td>
+          <td>${formatRp(grandUntung)}</td>
+        </tr>
+      </tbody>
+    </table>
+  `;
+}
+
+function renderRekapHarianResult(resultEl){
+  if(state.rekapHarianResult === null){ resultEl.innerHTML=''; return; }
+  const entries = state.rekapHarianResult;
+  if(entries.length === 0){
+    resultEl.innerHTML = `<div class="card empty-state">${ICONS.empty}<p>Tidak ada transaksi pada tanggal tersebut.</p></div>`;
+    return;
+  }
+  const agg = aggregateByJurusan(entries);
+  resultEl.innerHTML = `
+    <div class="card">
+      <div class="stamp">${stampSVG(formatTanggalPendek(state.rekapTanggal))}</div>
+      ${renderAggTable(agg, entries)}
+      <div style="height:14px"></div>
+      <button class="btn-secondary" id="rekap-harian-download">${ICONS.download} Unduh PDF Harian</button>
+    </div>
+  `;
+  document.getElementById('rekap-harian-download').addEventListener('click', ()=>{
+    generateHarianPDF(state.rekapTanggal, entries);
+  });
+}
+
+function renderRekapPeriodeResult(resultEl){
+  if(state.rekapResult === null){ resultEl.innerHTML=''; return; }
+  const entries = state.rekapResult;
+  if(entries.length === 0){
+    resultEl.innerHTML = `<div class="card empty-state">${ICONS.empty}<p>Tidak ada transaksi pada rentang tanggal tersebut.</p></div>`;
+    return;
+  }
+  const agg = aggregateByJurusan(entries);
+  resultEl.innerHTML = `
+    <div class="card">
+      <div class="stamp">${stampSVG(formatTanggalPendek(state.rekapFrom), formatTanggalPendek(state.rekapTo))}</div>
+      ${renderAggTable(agg, entries)}
+      <div style="height:14px"></div>
+      <button class="btn-secondary" id="rekap-download">${ICONS.download} Unduh PDF Rekap Periode</button>
+    </div>
+  `;
+  document.getElementById('rekap-download').addEventListener('click', ()=>{
+    generateRekapPDF(state.rekapFrom, state.rekapTo, entries);
+  });
+}
+
+function stampSVG(from, to){
+  const isHarian = !to;
+  const label = isHarian ? 'SKABIC · REKAP HARIAN' : 'SKABIC · REKAP PERIODE';
+  return `
+  <svg viewBox="0 0 120 120">
+    <circle cx="60" cy="60" r="54" fill="none" stroke="var(--gold)" stroke-width="2"/>
+    <circle cx="60" cy="60" r="47" fill="none" stroke="var(--gold)" stroke-width="1"/>
+    <path id="arcTop" d="M 18 60 A 42 42 0 0 1 102 60" fill="none"/>
+    <text font-family="IBM Plex Mono, monospace" font-size="7.2" font-weight="600" fill="var(--gold)" letter-spacing="1.5">
+      <textPath href="#arcTop" startOffset="50%" text-anchor="middle">${label}</textPath>
+    </text>
+    <text x="60" y="${isHarian?64:57}" text-anchor="middle" font-family="Fraunces, serif" font-weight="600" font-size="10" fill="var(--navy-deep)">${from}</text>
+    ${isHarian ? '' : `<text x="60" y="70" text-anchor="middle" font-family="Inter, sans-serif" font-size="7" fill="var(--ink-soft)">s/d ${to}</text>`}
+  </svg>`;
+}
+
+/* ============ INIT ============ */
+loadAll();
+</script>
+</body>
+</html>
