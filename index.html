@@ -6,37 +6,41 @@
 <title>SKABIC — Rekap Keuangan</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root{
-    --ink:#1C2B3A;
-    --ink-soft:#5B6B7C;
-    --paper:#F1F3ED;
-    --paper-line:#DBDFD3;
+    --ink:#182B33;
+    --ink-soft:#5E6E76;
+    --paper:#FFFFFF;
+    --paper-alt:#F2F6F6;
+    --paper-line:#E1E7E7;
     --card:#FFFFFF;
-    --gold:#B8873A;
-    --gold-soft:#F1E4C6;
-    --navy-deep:#14202E;
-    --navy-deep-2:#1D2E42;
+    --gold:#177B72;
+    --gold-soft:#E4F3F1;
+    --navy-deep:#0B2A45;
+    --navy-deep-2:#0E4B47;
+    --header-teal:#2C8377;
+    --btn-teal-dark:#0F5A52;
+    --bg-outer:#EEF2F1;
     --danger:#B23A3A;
     --hotel:#2C5F8A;
     --hotel-bg:#E6EEF4;
-    --kuliner:#C1622B;
+    --kuliner:#B5622C;
     --kuliner-bg:#F7E7DC;
     --kesehatan:#2F7865;
     --kesehatan-bg:#E1EFEA;
     --farmasi:#6B4C7A;
     --farmasi-bg:#EAE2ED;
     --radius:14px;
-    --shadow: 0 1px 2px rgba(20,32,46,0.06), 0 6px 20px rgba(20,32,46,0.07);
+    --shadow: 0 1px 2px rgba(11,42,69,0.05), 0 6px 20px rgba(11,42,69,0.06);
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
-    background:var(--paper);
+    background:var(--bg-outer);
     font-family:'Inter',sans-serif;
     color:var(--ink);
     -webkit-font-smoothing:antialiased;
@@ -49,42 +53,35 @@
     display:flex;
     flex-direction:column;
     position:relative;
-    box-shadow: 0 0 40px rgba(20,32,46,0.08);
+    box-shadow: 0 0 40px rgba(11,42,69,0.08);
   }
   @media (min-width:520px){
-    body{ background: linear-gradient(180deg,#0E1A26,#233348 100%); padding:24px 0; }
-    #root{ min-height:calc(100vh - 48px); border-radius:22px; overflow:hidden; }
+    body{ background: var(--bg-outer); padding:24px 0; }
+    #root{ min-height:calc(100vh - 48px); border-radius:22px; overflow:hidden; box-shadow: 0 0 50px rgba(11,42,69,0.10); }
   }
 
   /* ---------- Header ---------- */
   .topbar{
-    background: radial-gradient(120% 140% at 0% 0%, #223349 0%, var(--navy-deep) 60%);
+    background: var(--header-teal);
     color:#fff;
     padding:22px 20px 18px;
     position:relative;
-    overflow:hidden;
-  }
-  .topbar::after{
-    content:"";
-    position:absolute; inset:0;
-    background-image: repeating-linear-gradient(180deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 26px);
-    pointer-events:none;
   }
   .brand-text{ position:relative; z-index:1; }
-  .brand-text h1{ font-family:'Fraunces',serif; font-weight:700; font-size:22px; margin:0; letter-spacing:0.3px; }
-  .brand-text p{ margin:2px 0 0; font-size:12px; color:#B9C4D2; letter-spacing:0.3px; }
+  .brand-text h1{ font-family:'Manrope',sans-serif; font-weight:800; font-size:22px; margin:0; letter-spacing:0.4px; }
+  .brand-text p{ margin:2px 0 0; font-size:12px; color:#AFC6C3; letter-spacing:0.3px; }
   .topbar-summary{
     position:relative; z-index:1;
     margin-top:16px;
     display:flex; gap:10px;
   }
   .sum-card{
-    flex:1; background:rgba(255,255,255,0.06);
-    border:1px solid rgba(255,255,255,0.12);
+    flex:1; background:rgba(255,255,255,0.07);
+    border:1px solid rgba(255,255,255,0.14);
     border-radius:12px; padding:10px 12px;
   }
-  .sum-card .lbl{ font-size:10.5px; color:#9FB0C2; text-transform:uppercase; letter-spacing:0.6px;}
-  .sum-card .val{ font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:15px; margin-top:3px; color:#F4EBD6;}
+  .sum-card .lbl{ font-size:10.5px; color:#A9C2BE; text-transform:uppercase; letter-spacing:0.6px;}
+  .sum-card .val{ font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:15px; margin-top:3px; color:#F0F7F6;}
 
   /* ---------- Top Tabs (nav) ---------- */
   .top-tabs{
@@ -94,7 +91,7 @@
     border-bottom:1px solid var(--paper-line);
     padding:6px 8px;
     gap:4px;
-    box-shadow:0 2px 8px rgba(20,32,46,0.05);
+    box-shadow:0 2px 8px rgba(11,42,69,0.05);
   }
   .nav-btn{
     flex:1; border:none; background:transparent; cursor:pointer;
@@ -104,13 +101,13 @@
     transition: color .15s, background .15s;
   }
   .nav-btn svg{ width:20px; height:20px; }
-  .nav-btn.active{ color:var(--navy-deep); background:var(--gold-soft); }
-  .nav-btn.active svg{ stroke:var(--navy-deep); }
+  .nav-btn.active{ color:#fff; background:var(--btn-teal-dark); }
+  .nav-btn.active svg{ stroke:#fff; }
 
   main{ flex:1; padding:16px 16px 26px; overflow-y:auto; }
 
   h2.section-title{
-    font-family:'Fraunces',serif; font-weight:600; font-size:18px; margin:2px 0 3px;
+    font-family:'Manrope',sans-serif; font-weight:600; font-size:18px; margin:2px 0 3px;
   }
   p.section-sub{ font-size:12.5px; color:var(--ink-soft); margin:0 0 16px; }
 
@@ -155,15 +152,15 @@
     background:var(--gold-soft); border-radius:9px; padding:9px 12px; margin-top:8px;
     display:flex; justify-content:space-between; align-items:center; gap:8px;
   }
-  .potongan-box .p-lbl{ font-size:10.5px; font-weight:700; color:#7A5A22; text-transform:uppercase; letter-spacing:0.3px; }
-  .potongan-box .p-val{ font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:12.5px; color:#5C3F14; text-align:right; }
+  .potongan-box .p-lbl{ font-size:10.5px; font-weight:700; color:#0E4B47; text-transform:uppercase; letter-spacing:0.3px; }
+  .potongan-box .p-val{ font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:12.5px; color:#0B3330; text-align:right; }
 
   .btn-primary{
     width:100%; border:none; border-radius:11px; padding:13px 16px;
-    background: linear-gradient(180deg,#223349,var(--navy-deep));
+    background: var(--btn-teal-dark);
     color:#fff; font-weight:700; font-size:14px; cursor:pointer;
     font-family:'Inter',sans-serif; letter-spacing:0.2px;
-    box-shadow: 0 4px 12px rgba(20,32,46,0.25);
+    box-shadow: 0 4px 12px rgba(10,45,41,0.28);
   }
   .btn-primary:active{ transform: translateY(1px); }
   .btn-secondary{
@@ -179,7 +176,7 @@
   }
   .btn-small svg{ width:13px;height:13px; }
   .btn-small.danger{ color:var(--danger); border-color:#EAD0D0; }
-  .btn-small.gold{ color:#7A5A22; border-color:var(--gold); background:var(--gold-soft); }
+  .btn-small.gold{ color:#0E4B47; border-color:var(--gold); background:var(--gold-soft); }
 
   .toast{
     position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(10px);
@@ -195,7 +192,7 @@
   .filter-row select{ font-family:'Inter',sans-serif; font-weight:600; font-size:12.5px; padding:9px 10px;}
 
   .mode-tabs{
-    display:flex; background:var(--paper); border:1.5px solid var(--paper-line); border-radius:12px;
+    display:flex; background:var(--paper-alt); border:1.5px solid var(--paper-line); border-radius:12px;
     padding:3px; margin-bottom:14px; gap:2px;
   }
   .mode-tab{
@@ -203,11 +200,11 @@
     font-size:12.5px; font-weight:700; color:var(--ink-soft); cursor:pointer;
     font-family:'Inter',sans-serif; background:transparent; transition: background .15s, color .15s;
   }
-  .mode-tab.active{ background:var(--navy-deep); color:#fff; }
+  .mode-tab.active{ background:var(--btn-teal-dark); color:#fff; }
 
   .date-group{ margin-bottom:14px; }
   .date-head{ padding:2px 2px 8px; }
-  .date-head .d-label{ font-family:'Fraunces',serif; font-weight:600; font-size:14.5px;}
+  .date-head .d-label{ font-family:'Manrope',sans-serif; font-weight:600; font-size:14.5px;}
   .date-head .d-sub{ font-size:10.5px; color:var(--ink-soft); }
   .entry-row{
     display:flex; align-items:center; gap:10px; padding:10px 4px;
@@ -231,8 +228,8 @@
     display:flex; justify-content:space-between; align-items:center;
     background:var(--gold-soft); border-radius:9px; padding:9px 12px; margin:10px 0 4px;
   }
-  .day-total .t-lbl{ font-size:11px; font-weight:700; color:#7A5A22; text-transform:uppercase; letter-spacing:0.4px;}
-  .day-total .t-val{ font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:12.5px; color:#5C3F14;}
+  .day-total .t-lbl{ font-size:11px; font-weight:700; color:#0E4B47; text-transform:uppercase; letter-spacing:0.4px;}
+  .day-total .t-val{ font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:12.5px; color:#0B3330;}
 
   .stamp{ width:104px;height:104px; margin:6px auto 4px; position:relative; }
   .stamp svg{ width:100%; height:100%; }
@@ -266,15 +263,16 @@
   .lock-badge{
     width:60px;height:60px;border-radius:50%; margin:0 auto 16px;
     background:var(--gold-soft); display:flex;align-items:center;justify-content:center;
-    color:#7A5A22;
+    color:#0E4B47;
   }
   .lock-badge svg{ width:26px;height:26px; }
-  .password-screen h3{ font-family:'Fraunces',serif; font-weight:600; font-size:17px; margin:0 0 4px; }
+  .password-screen h3{ font-family:'Manrope',sans-serif; font-weight:600; font-size:17px; margin:0 0 4px; }
   .password-screen p{ font-size:12.5px; color:var(--ink-soft); margin:0 0 18px; }
 
   /* ---------- Settings ---------- */
   .settings-section{ margin-bottom:20px; }
-  .settings-section h4{ font-family:'Fraunces',serif; font-weight:600; font-size:14.5px; margin:0 0 10px; }
+  .settings-section h4{ font-family:'Manrope',sans-serif; font-weight:600; font-size:14.5px; margin:0 0 10px; display:flex; align-items:center; gap:6px; }
+  .settings-section h4 svg{ width:16px; height:16px; flex-shrink:0; color:var(--navy-deep-2); }
   .logo-preview-wrap{ display:flex; flex-direction:column; align-items:center; gap:12px; padding:6px 0 4px; }
   .logo-preview-banner{
     width:100%; max-width:260px; height:80px; border-radius:12px; overflow:hidden;
@@ -282,7 +280,7 @@
     display:flex;align-items:center;justify-content:center; border:1.5px dashed var(--paper-line);
   }
   .logo-preview-banner img{ width:100%; height:100%; object-fit:contain; }
-  .logo-preview-banner .ph{ font-family:'Fraunces',serif; font-weight:700; font-size:15px; color:var(--ink-soft); text-align:center; padding:0 10px; }
+  .logo-preview-banner .ph{ font-family:'Manrope',sans-serif; font-weight:700; font-size:15px; color:var(--ink-soft); text-align:center; padding:0 10px; }
   .file-label{
     display:inline-flex; align-items:center; justify-content:center; gap:6px;
     border:1.5px solid var(--navy-deep); border-radius:11px; padding:11px 16px;
@@ -297,7 +295,7 @@
   .inline-row{ display:flex; gap:8px; align-items:flex-end; }
   .inline-row .field{ flex:1; margin-bottom:0; }
   .divider{ height:1px; background:var(--paper-line); margin:18px 0; }
-  .edit-form{ background:var(--paper); border-radius:11px; padding:12px; margin:6px 0 12px; border:1.5px solid var(--paper-line); }
+  .edit-form{ background:var(--paper-alt); border-radius:11px; padding:12px; margin:6px 0 12px; border:1.5px solid var(--paper-line); }
   .edit-form .field{ margin-bottom:10px; }
   .edit-actions{ display:flex; gap:8px; margin-top:4px; }
   .edit-actions .btn-primary, .edit-actions .btn-secondary{ padding:10px; font-size:12.5px; }
@@ -357,12 +355,8 @@ let state = {
   password: DEFAULT_PASSWORD,
   isAdmin: false,
   passwordInput: '',
-  supabaseUrl: '',
-  supabaseKey: '',
   supabaseClient: null,
   supabaseConnected: false,
-  supabaseUrlInput: '',
-  supabaseKeyInput: '',
   form: { jurusan:null, tanggal: todayStr(), kotor:'', untung:'' },
   formErrors: {},
   filterJurusan: 'semua',
@@ -402,51 +396,36 @@ function uid(){ return 'e' + Date.now().toString(36) + Math.random().toString(36
 function jurusanLabelFor(key){ return key==='semua' ? 'Semua Jurusan' : jMap[key].label; }
 
 /* ============ SUPABASE CONNECTION ============ */
-async function loadSupabaseConfig(){
-  try{
-    const res = await window.storage.get('skabic-supabase-config', true);
-    if(res && res.value){
-      const cfg = JSON.parse(res.value);
-      state.supabaseUrl = cfg.url || '';
-      state.supabaseKey = cfg.key || '';
-    }
-  }catch(e){ /* belum dikonfigurasi */ }
-  state.supabaseUrlInput = state.supabaseUrl;
-  state.supabaseKeyInput = state.supabaseKey;
-}
+// Isi kedua nilai di bawah ini secara manual dengan Project URL dan
+// Anon (public) Key dari Supabase Anda. Lihat langkah lengkapnya di
+// panduan yang diberikan bersama file ini. Jika dikosongkan (''),
+// aplikasi otomatis memakai penyimpanan bawaan sebagai cadangan.
+const SUPABASE_URL = '';
+const SUPABASE_ANON_KEY = '';
+
 async function connectSupabase(url, key){
-  if(!url || !key){ showToast('Isi URL dan Anon Key Supabase terlebih dahulu'); return false; }
+  if(!url || !key) return false;
   try{
     const { createClient } = window.supabase;
     const client = createClient(url, key);
     const { error } = await client.from('skabic_settings').select('id').limit(1);
     if(error) throw error;
     state.supabaseClient = client;
-    state.supabaseUrl = url;
-    state.supabaseKey = key;
     state.supabaseConnected = true;
-    await window.storage.set('skabic-supabase-config', JSON.stringify({ url, key }), true);
     return true;
   }catch(e){
     state.supabaseConnected = false;
-    showToast('Gagal terhubung ke Supabase. Periksa URL, Anon Key, dan tabel di database.');
+    console.error('Gagal terhubung ke Supabase:', e);
     return false;
   }
-}
-async function disconnectSupabase(){
-  state.supabaseClient = null;
-  state.supabaseConnected = false;
-  try{ await window.storage.delete('skabic-supabase-config', true); }catch(e){}
-  showToast('Sambungan Supabase diputus, kembali ke penyimpanan bawaan');
-  render();
 }
 
 /* ============ STORAGE / DB LAYER ============ */
 async function loadAll(){
-  await loadSupabaseConfig();
   let supabaseReady = false;
-  if(state.supabaseUrl && state.supabaseKey){
-    supabaseReady = await connectSupabase(state.supabaseUrl, state.supabaseKey);
+  const supabaseConfigured = !!(SUPABASE_URL && SUPABASE_ANON_KEY);
+  if(supabaseConfigured){
+    supabaseReady = await connectSupabase(SUPABASE_URL, SUPABASE_ANON_KEY);
   }
 
   if(supabaseReady){
@@ -459,6 +438,9 @@ async function loadAll(){
   state.settingsPercentInput = String(state.percent);
   state.loading = false;
   render();
+  if(supabaseConfigured && !supabaseReady){
+    setTimeout(()=> showToast('Gagal terhubung ke Supabase, memakai penyimpanan bawaan sementara.'), 300);
+  }
 }
 
 async function dbLoadEntriesFromSupabase(){
@@ -789,7 +771,7 @@ function setFilterJurusan(val){ state.filterJurusan = val; render(); }
 
 /* ============ PDF GENERATION ============ */
 function pdfHeader(doc, title, subtitle){
-  doc.setFillColor(20,32,46);
+  doc.setFillColor(11,42,69);
   doc.rect(0,0,210,26,'F');
   if(state.logo){
     try{ doc.addImage(state.logo, 'PNG', 12, 5, 62, 16); }catch(e){ /* ignore malformed image */ }
@@ -847,12 +829,12 @@ function generateHarianPDF(tanggal, jurusanKey, entries){
     head: [['Jurusan','Omzet','Potongan SKABIC','Nominal Potongan','Laba Bersih']],
     body: rows.length ? rows : [['Tidak ada data','-','-','-','-']],
     theme: 'grid',
-    headStyles:{ fillColor:[28,43,58], textColor:255, fontSize:8.5 },
+    headStyles:{ fillColor:[11,42,69], textColor:255, fontSize:8.5 },
     bodyStyles:{ fontSize:8.5 },
     didParseCell: (data)=>{
       if(entries.length && data.row.index === rows.length-1 && data.section==='body'){
         data.cell.styles.fontStyle = 'bold';
-        data.cell.styles.fillColor = [241,228,198];
+        data.cell.styles.fillColor = [228,243,241];
       }
     }
   });
@@ -883,12 +865,12 @@ function generateBulananPDF(bulanStr, jurusanKey, entries){
     head: [['Jurusan','Jml Transaksi','Total Omzet','Total Potongan SKABIC','Total Laba Bersih']],
     body: rowsA,
     theme: 'grid',
-    headStyles:{ fillColor:[28,43,58], textColor:255, fontSize:8.5 },
+    headStyles:{ fillColor:[11,42,69], textColor:255, fontSize:8.5 },
     bodyStyles:{ fontSize:8.5 },
     didParseCell: (data)=>{
       if(data.row.index === rowsA.length-1 && data.section==='body'){
         data.cell.styles.fontStyle = 'bold';
-        data.cell.styles.fillColor = [241,228,198];
+        data.cell.styles.fillColor = [228,243,241];
       }
     }
   });
@@ -913,12 +895,12 @@ function generateBulananPDF(bulanStr, jurusanKey, entries){
     head: [['Tanggal','Jml Transaksi','Omzet','Potongan SKABIC','Laba Bersih']],
     body: rowsB.length ? rowsB : [['Tidak ada data','-','-','-','-']],
     theme: 'striped',
-    headStyles:{ fillColor:[80,90,102], textColor:255, fontSize:8 },
+    headStyles:{ fillColor:[14,75,71], textColor:255, fontSize:8 },
     bodyStyles:{ fontSize:8 },
     didParseCell: (data)=>{
       if(dates.length && data.row.index === rowsB.length-1 && data.section==='body'){
         data.cell.styles.fontStyle = 'bold';
-        data.cell.styles.fillColor = [241,228,198];
+        data.cell.styles.fillColor = [228,243,241];
       }
     }
   });
@@ -1196,7 +1178,7 @@ function stampSVG(label, isHarian){
     <text font-family="IBM Plex Mono, monospace" font-size="7" font-weight="600" fill="var(--gold)" letter-spacing="1.3">
       <textPath href="#arcTop" startOffset="50%" text-anchor="middle">${modeLabel}</textPath>
     </text>
-    <text x="60" y="64" text-anchor="middle" font-family="Fraunces, serif" font-weight="600" font-size="10" fill="var(--navy-deep)">${label}</text>
+    <text x="60" y="64" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="600" font-size="10" fill="var(--navy-deep)">${label}</text>
   </svg>`;
 }
 
@@ -1224,7 +1206,16 @@ function renderSettingView(mv){
 
   mv.innerHTML = `
     <h2 class="section-title">Pengaturan Admin</h2>
-    <p class="section-sub">Kelola logo, persentase potongan SKABIC, password, dan data riwayat transaksi.</p>
+    <p class="section-sub">Kelola koneksi database, logo, persentase potongan SKABIC, password, dan data riwayat transaksi.</p>
+
+    <div class="card settings-section">
+      <h4>${ICONS.database} Status Database</h4>
+      <div class="db-status ${state.supabaseConnected?'connected':'disconnected'}">
+        <span class="dot2"></span>
+        ${state.supabaseConnected ? 'Terhubung ke Supabase — data tersimpan di cloud dan bisa diakses dari perangkat mana pun.' : 'Belum terhubung ke Supabase — data masih tersimpan secara bawaan di aplikasi ini.'}
+      </div>
+      <p class="hint">URL dan Anon Key Supabase diatur langsung di dalam kode HTML aplikasi (bukan dari sini), agar tidak bisa diubah sembarangan lewat tampilan. Lihat panduan terpisah untuk langkah memasukkan URL &amp; Key ke kode serta langkah menyiapkan project Supabase-nya.</p>
+    </div>
 
     <div class="card settings-section">
       <h4>Logo Header PDF</h4>
