@@ -318,6 +318,8 @@
 /* ============ CONFIG ============ */
 const DEFAULT_PASSWORD = 'skabic123';
 const DEFAULT_PERCENT = 25;
+const DEFAULT_PERCENT_KAS = 45;
+const DEFAULT_PERCENT_PRODUKSI = 30;
 
 const JURUSAN = [
   { key:'hotel', label:'Perhotelan', color:'var(--hotel)', bg:'var(--hotel-bg)',
@@ -352,6 +354,8 @@ let state = {
   entries: [],
   logo: null,
   percent: DEFAULT_PERCENT,
+  percentKas: DEFAULT_PERCENT_KAS,
+  percentProduksi: DEFAULT_PERCENT_PRODUKSI,
   password: DEFAULT_PASSWORD,
   isAdmin: false,
   passwordInput: '',
@@ -368,6 +372,8 @@ let state = {
   adminEditId: null,
   adminEditForm: null,
   settingsPercentInput: String(DEFAULT_PERCENT),
+  settingsPercentKasInput: String(DEFAULT_PERCENT_KAS),
+  settingsPercentProduksiInput: String(DEFAULT_PERCENT_PRODUKSI),
   settingsPassNew: '',
   settingsPassNew2: '',
 };
@@ -436,6 +442,8 @@ async function loadAll(){
     await dbLoadSettingsFromLocal();
   }
   state.settingsPercentInput = String(state.percent);
+  state.settingsPercentKasInput = String(state.percentKas);
+  state.settingsPercentProduksiInput = String(state.percentProduksi);
   state.loading = false;
   render();
   if(supabaseConfigured && !supabaseReady){
@@ -452,6 +460,10 @@ async function dbLoadEntriesFromSupabase(){
       id: r.id, jurusan: r.jurusan, tanggal: r.tanggal,
       kotor: Number(r.kotor), untung: Number(r.untung),
       skabicPercent: Number(r.skabic_percent), skabicNominal: Number(r.skabic_nominal),
+      kasPercent: r.kas_percent!=null ? Number(r.kas_percent) : null,
+      kasNominal: r.kas_nominal!=null ? Number(r.kas_nominal) : null,
+      produksiPercent: r.produksi_percent!=null ? Number(r.produksi_percent) : null,
+      produksiNominal: r.produksi_nominal!=null ? Number(r.produksi_nominal) : null,
       createdAt: Number(r.created_at)
     }));
   }catch(e){
@@ -466,9 +478,12 @@ async function dbLoadSettingsFromSupabase(){
     if(error) throw error;
     state.logo = data && data.logo ? data.logo : null;
     state.percent = data && data.percent!=null ? Number(data.percent) : DEFAULT_PERCENT;
+    state.percentKas = data && data.percent_kas!=null ? Number(data.percent_kas) : DEFAULT_PERCENT_KAS;
+    state.percentProduksi = data && data.percent_produksi!=null ? Number(data.percent_produksi) : DEFAULT_PERCENT_PRODUKSI;
     state.password = data && data.password ? data.password : DEFAULT_PASSWORD;
   }catch(e){
-    state.logo = null; state.percent = DEFAULT_PERCENT; state.password = DEFAULT_PASSWORD;
+    state.logo = null; state.percent = DEFAULT_PERCENT; state.percentKas = DEFAULT_PERCENT_KAS;
+    state.percentProduksi = DEFAULT_PERCENT_PRODUKSI; state.password = DEFAULT_PASSWORD;
   }
 }
 async function dbLoadEntriesFromLocal(){
@@ -486,6 +501,14 @@ async function dbLoadSettingsFromLocal(){
     const res = await window.storage.get('skabic-percent', true);
     state.percent = res && res.value ? Number(res.value) : DEFAULT_PERCENT;
   }catch(e){ state.percent = DEFAULT_PERCENT; }
+  try{
+    const res = await window.storage.get('skabic-percent-kas', true);
+    state.percentKas = res && res.value ? Number(res.value) : DEFAULT_PERCENT_KAS;
+  }catch(e){ state.percentKas = DEFAULT_PERCENT_KAS; }
+  try{
+    const res = await window.storage.get('skabic-percent-produksi', true);
+    state.percentProduksi = res && res.value ? Number(res.value) : DEFAULT_PERCENT_PRODUKSI;
+  }catch(e){ state.percentProduksi = DEFAULT_PERCENT_PRODUKSI; }
   try{
     const res = await window.storage.get('skabic-password', true);
     state.password = res && res.value ? res.value : DEFAULT_PASSWORD;
@@ -505,6 +528,8 @@ async function dbInsertEntry(entry){
         id: entry.id, jurusan: entry.jurusan, tanggal: entry.tanggal,
         kotor: entry.kotor, untung: entry.untung,
         skabic_percent: entry.skabicPercent, skabic_nominal: entry.skabicNominal,
+        kas_percent: entry.kasPercent, kas_nominal: entry.kasNominal,
+        produksi_percent: entry.produksiPercent, produksi_nominal: entry.produksiNominal,
         created_at: entry.createdAt
       });
       if(error) throw error;
@@ -519,7 +544,9 @@ async function dbUpdateEntry(id, fields){
       const { error } = await state.supabaseClient.from('skabic_entries').update({
         jurusan: fields.jurusan, tanggal: fields.tanggal,
         kotor: fields.kotor, untung: fields.untung,
-        skabic_percent: fields.skabicPercent, skabic_nominal: fields.skabicNominal
+        skabic_percent: fields.skabicPercent, skabic_nominal: fields.skabicNominal,
+        kas_percent: fields.kasPercent, kas_nominal: fields.kasNominal,
+        produksi_percent: fields.produksiPercent, produksi_nominal: fields.produksiNominal
       }).eq('id', id);
       if(error) throw error;
     }catch(e){ showToast('Gagal memperbarui data di Supabase'); }
@@ -543,6 +570,8 @@ async function dbSaveSettings(fields){
       const payload = { id:1 };
       if('logo' in fields) payload.logo = fields.logo;
       if('percent' in fields) payload.percent = fields.percent;
+      if('percentKas' in fields) payload.percent_kas = fields.percentKas;
+      if('percentProduksi' in fields) payload.percent_produksi = fields.percentProduksi;
       if('password' in fields) payload.password = fields.password;
       const { error } = await state.supabaseClient.from('skabic_settings').upsert(payload);
       if(error) throw error;
@@ -555,6 +584,8 @@ async function dbSaveSettings(fields){
         else await window.storage.delete('skabic-logo', true);
       }
       if('percent' in fields) await window.storage.set('skabic-percent', String(fields.percent), true);
+      if('percentKas' in fields) await window.storage.set('skabic-percent-kas', String(fields.percentKas), true);
+      if('percentProduksi' in fields) await window.storage.set('skabic-percent-produksi', String(fields.percentProduksi), true);
       if('password' in fields) await window.storage.set('skabic-password', fields.password, true);
       return true;
     }catch(e){ showToast('Gagal menyimpan pengaturan'); return false; }
@@ -639,14 +670,22 @@ function renderRpPreview(){
   const uEl = document.getElementById('untung-preview');
   if(kEl) kEl.textContent = state.form.kotor ? formatRp(state.form.kotor) : '';
   if(uEl) uEl.textContent = state.form.untung ? formatRp(state.form.untung) : '';
-  const pVal = document.getElementById('potongan-val');
-  const pPct = document.getElementById('potongan-pct');
-  if(pVal){
-    const omzet = Number(state.form.kotor)||0;
-    const nominal = Math.round(omzet * state.percent/100);
-    pVal.textContent = formatRp(nominal);
-  }
-  if(pPct) pPct.textContent = state.percent + '%';
+
+  const untung = Number(state.form.untung)||0;
+  const skabicVal = document.getElementById('skabic-breakdown-val');
+  const skabicPct = document.getElementById('skabic-breakdown-pct');
+  if(skabicVal) skabicVal.textContent = formatRp(Math.round(untung * state.percent/100));
+  if(skabicPct) skabicPct.textContent = state.percent + '%';
+
+  const kasVal = document.getElementById('kas-breakdown-val');
+  const kasPct = document.getElementById('kas-breakdown-pct');
+  if(kasVal) kasVal.textContent = formatRp(Math.round(untung * state.percentKas/100));
+  if(kasPct) kasPct.textContent = state.percentKas + '%';
+
+  const produksiVal = document.getElementById('produksi-breakdown-val');
+  const produksiPct = document.getElementById('produksi-breakdown-pct');
+  if(produksiVal) produksiVal.textContent = formatRp(Math.round(untung * state.percentProduksi/100));
+  if(produksiPct) produksiPct.textContent = state.percentProduksi + '%';
 }
 
 async function submitEntry(){
@@ -667,11 +706,13 @@ async function submitEntry(){
   }
 
   state.formErrors = {};
-  const percent = state.percent;
-  const nominal = Math.round(kotor * percent/100);
+  const percent = state.percent, percentKas = state.percentKas, percentProduksi = state.percentProduksi;
   const newEntry = {
-    id: uid(), jurusan: f.jurusan, tanggal: f.tanggal,
-    kotor, untung, skabicPercent: percent, skabicNominal: nominal, createdAt: Date.now()
+    id: uid(), jurusan: f.jurusan, tanggal: f.tanggal, kotor, untung,
+    skabicPercent: percent, skabicNominal: Math.round(untung * percent/100),
+    kasPercent: percentKas, kasNominal: Math.round(untung * percentKas/100),
+    produksiPercent: percentProduksi, produksiNominal: Math.round(untung * percentProduksi/100),
+    createdAt: Date.now()
   };
   state.entries.push(newEntry);
   await dbInsertEntry(newEntry);
@@ -715,12 +756,20 @@ function logoutAdmin(){
   showToast('Keluar dari mode admin');
   render();
 }
-function updatePercentInput(val){ state.settingsPercentInput = val; }
+function updatePercentInput(field, val){ state[field] = val; }
 async function savePercentSetting(){
-  const val = Number(state.settingsPercentInput);
-  if(isNaN(val) || val<0 || val>100){ showToast('Masukkan persentase antara 0-100'); return; }
-  const ok = await dbSaveSettings({ percent: val });
-  if(ok){ state.percent = val; showToast('Persentase potongan berhasil diperbarui'); }
+  const valSkabic = Number(state.settingsPercentInput);
+  const valKas = Number(state.settingsPercentKasInput);
+  const valProduksi = Number(state.settingsPercentProduksiInput);
+  if([valSkabic, valKas, valProduksi].some(v=> isNaN(v) || v<0 || v>100)){
+    showToast('Masukkan persentase antara 0-100 untuk semua kolom');
+    return;
+  }
+  const ok = await dbSaveSettings({ percent: valSkabic, percentKas: valKas, percentProduksi: valProduksi });
+  if(ok){
+    state.percent = valSkabic; state.percentKas = valKas; state.percentProduksi = valProduksi;
+    showToast('Persentase berhasil diperbarui');
+  }
   render();
 }
 function updateNewPass(field, val){ state[field] = val; }
@@ -749,11 +798,13 @@ async function saveEditEntry(){
   if(isNaN(kotor) || kotor<0 || isNaN(untung) || untung<0){ showToast('Nominal tidak valid'); return; }
   const idx = state.entries.findIndex(x=>x.id===state.adminEditId);
   if(idx===-1) return;
-  const percent = state.percent;
+  const percent = state.percent, percentKas = state.percentKas, percentProduksi = state.percentProduksi;
   const updated = {
     ...state.entries[idx],
     jurusan:f.jurusan, tanggal:f.tanggal, kotor, untung,
-    skabicPercent:percent, skabicNominal: Math.round(kotor*percent/100)
+    skabicPercent:percent, skabicNominal: Math.round(untung*percent/100),
+    kasPercent:percentKas, kasNominal: Math.round(untung*percentKas/100),
+    produksiPercent:percentProduksi, produksiNominal: Math.round(untung*percentProduksi/100)
   };
   state.entries[idx] = updated;
   await dbUpdateEntry(state.adminEditId, updated);
@@ -805,9 +856,19 @@ function pdfFooter(doc){
 }
 function entryNominal(e){
   const percent = e.skabicPercent!=null ? e.skabicPercent : state.percent;
-  return e.skabicNominal!=null ? e.skabicNominal : Math.round(e.kotor*percent/100);
+  return e.skabicNominal!=null ? e.skabicNominal : Math.round(e.untung*percent/100);
 }
 function entryPercent(e){ return e.skabicPercent!=null ? e.skabicPercent : state.percent; }
+function entryKasNominal(e){
+  const percent = e.kasPercent!=null ? e.kasPercent : state.percentKas;
+  return e.kasNominal!=null ? e.kasNominal : Math.round(e.untung*percent/100);
+}
+function entryKasPercent(e){ return e.kasPercent!=null ? e.kasPercent : state.percentKas; }
+function entryProduksiNominal(e){
+  const percent = e.produksiPercent!=null ? e.produksiPercent : state.percentProduksi;
+  return e.produksiNominal!=null ? e.produksiNominal : Math.round(e.untung*percent/100);
+}
+function entryProduksiPercent(e){ return e.produksiPercent!=null ? e.produksiPercent : state.percentProduksi; }
 
 function generateHarianPDF(tanggal, jurusanKey, entries){
   const { jsPDF } = window.jspdf;
@@ -815,22 +876,29 @@ function generateHarianPDF(tanggal, jurusanKey, entries){
   pdfHeader(doc, 'Rekap Keuangan Harian', `${formatTanggalPanjang(tanggal)} — ${jurusanLabelFor(jurusanKey)}`);
 
   const rows = entries.map(e => [
-    jMap[e.jurusan].label, formatRp(e.kotor), entryPercent(e)+'%', formatRp(entryNominal(e)), formatRp(e.untung)
+    jMap[e.jurusan].label,
+    formatRp(e.kotor),
+    formatRp(e.untung),
+    `${entryPercent(e)}%\n${formatRp(entryNominal(e))}`,
+    `${entryKasPercent(e)}%\n${formatRp(entryKasNominal(e))}`,
+    `${entryProduksiPercent(e)}%\n${formatRp(entryProduksiNominal(e))}`
   ]);
   const totalKotor = entries.reduce((s,e)=>s+e.kotor,0);
-  const totalNominal = entries.reduce((s,e)=>s+entryNominal(e),0);
   const totalUntung = entries.reduce((s,e)=>s+e.untung,0);
+  const totalSkabic = entries.reduce((s,e)=>s+entryNominal(e),0);
+  const totalKas = entries.reduce((s,e)=>s+entryKasNominal(e),0);
+  const totalProduksi = entries.reduce((s,e)=>s+entryProduksiNominal(e),0);
   if(entries.length){
-    rows.push(['TOTAL', formatRp(totalKotor), '-', formatRp(totalNominal), formatRp(totalUntung)]);
+    rows.push(['TOTAL', formatRp(totalKotor), formatRp(totalUntung), formatRp(totalSkabic), formatRp(totalKas), formatRp(totalProduksi)]);
   }
 
   doc.autoTable({
     startY: 46,
-    head: [['Jurusan','Omzet','Potongan SKABIC','Nominal Potongan','Laba Bersih']],
-    body: rows.length ? rows : [['Tidak ada data','-','-','-','-']],
+    head: [['Jurusan','Omzet','Laba Bersih','SKABIC','Kas Jurusan','Pelaku Produksi']],
+    body: rows.length ? rows : [['Tidak ada data','-','-','-','-','-']],
     theme: 'grid',
-    headStyles:{ fillColor:[11,42,69], textColor:255, fontSize:8.5 },
-    bodyStyles:{ fontSize:8.5 },
+    headStyles:{ fillColor:[11,42,69], textColor:255, fontSize:8 },
+    bodyStyles:{ fontSize:7.8, valign:'middle' },
     didParseCell: (data)=>{
       if(entries.length && data.row.index === rows.length-1 && data.section==='body'){
         data.cell.styles.fontStyle = 'bold';
@@ -838,6 +906,9 @@ function generateHarianPDF(tanggal, jurusanKey, entries){
       }
     }
   });
+  doc.setFontSize(8);
+  doc.setTextColor(110,110,110);
+  doc.text('Catatan: Potongan SKABIC, Kas Jurusan, dan Pelaku Produksi dihitung dari Laba Bersih (bukan Omzet).', 14, doc.lastAutoTable.finalY + 8);
   pdfFooter(doc);
   doc.save(`SKABIC-Harian-${tanggal}-${jurusanKey}.pdf`);
 }
@@ -849,24 +920,30 @@ function generateBulananPDF(bulanStr, jurusanKey, entries){
 
   const jurusanList = jurusanKey==='semua' ? JURUSAN : [jMap[jurusanKey]];
   const aggJ = {};
-  jurusanList.forEach(j => aggJ[j.key] = { jumlah:0, kotor:0, nominal:0, untung:0 });
+  jurusanList.forEach(j => aggJ[j.key] = { jumlah:0, kotor:0, untung:0, skabic:0, kas:0, produksi:0 });
   entries.forEach(e=>{
     if(!aggJ[e.jurusan]) return;
-    aggJ[e.jurusan].jumlah++; aggJ[e.jurusan].kotor+=e.kotor; aggJ[e.jurusan].nominal+=entryNominal(e); aggJ[e.jurusan].untung+=e.untung;
+    aggJ[e.jurusan].jumlah++; aggJ[e.jurusan].kotor+=e.kotor; aggJ[e.jurusan].untung+=e.untung;
+    aggJ[e.jurusan].skabic+=entryNominal(e); aggJ[e.jurusan].kas+=entryKasNominal(e); aggJ[e.jurusan].produksi+=entryProduksiNominal(e);
   });
   const grandKotor = entries.reduce((s,e)=>s+e.kotor,0);
-  const grandNominal = entries.reduce((s,e)=>s+entryNominal(e),0);
   const grandUntung = entries.reduce((s,e)=>s+e.untung,0);
-  const rowsA = jurusanList.map(j => [j.label, String(aggJ[j.key].jumlah), formatRp(aggJ[j.key].kotor), formatRp(aggJ[j.key].nominal), formatRp(aggJ[j.key].untung)]);
-  rowsA.push(['TOTAL', String(entries.length), formatRp(grandKotor), formatRp(grandNominal), formatRp(grandUntung)]);
+  const grandSkabic = entries.reduce((s,e)=>s+entryNominal(e),0);
+  const grandKas = entries.reduce((s,e)=>s+entryKasNominal(e),0);
+  const grandProduksi = entries.reduce((s,e)=>s+entryProduksiNominal(e),0);
+  const rowsA = jurusanList.map(j => [
+    j.label, String(aggJ[j.key].jumlah), formatRp(aggJ[j.key].kotor), formatRp(aggJ[j.key].untung),
+    formatRp(aggJ[j.key].skabic), formatRp(aggJ[j.key].kas), formatRp(aggJ[j.key].produksi)
+  ]);
+  rowsA.push(['TOTAL', String(entries.length), formatRp(grandKotor), formatRp(grandUntung), formatRp(grandSkabic), formatRp(grandKas), formatRp(grandProduksi)]);
 
   doc.autoTable({
     startY: 46,
-    head: [['Jurusan','Jml Transaksi','Total Omzet','Total Potongan SKABIC','Total Laba Bersih']],
+    head: [['Jurusan','Trx','Omzet','Laba Bersih','SKABIC','Kas Jurusan','Pelaku Produksi']],
     body: rowsA,
     theme: 'grid',
-    headStyles:{ fillColor:[11,42,69], textColor:255, fontSize:8.5 },
-    bodyStyles:{ fontSize:8.5 },
+    headStyles:{ fillColor:[11,42,69], textColor:255, fontSize:7.5 },
+    bodyStyles:{ fontSize:7.5 },
     didParseCell: (data)=>{
       if(data.row.index === rowsA.length-1 && data.section==='body'){
         data.cell.styles.fontStyle = 'bold';
@@ -881,22 +958,26 @@ function generateBulananPDF(bulanStr, jurusanKey, entries){
 
   const dateMap = {};
   entries.forEach(e=>{
-    if(!dateMap[e.tanggal]) dateMap[e.tanggal] = { jumlah:0, kotor:0, nominal:0, untung:0 };
-    dateMap[e.tanggal].jumlah++; dateMap[e.tanggal].kotor+=e.kotor; dateMap[e.tanggal].nominal+=entryNominal(e); dateMap[e.tanggal].untung+=e.untung;
+    if(!dateMap[e.tanggal]) dateMap[e.tanggal] = { jumlah:0, kotor:0, untung:0, skabic:0, kas:0, produksi:0 };
+    dateMap[e.tanggal].jumlah++; dateMap[e.tanggal].kotor+=e.kotor; dateMap[e.tanggal].untung+=e.untung;
+    dateMap[e.tanggal].skabic+=entryNominal(e); dateMap[e.tanggal].kas+=entryKasNominal(e); dateMap[e.tanggal].produksi+=entryProduksiNominal(e);
   });
   const dates = Object.keys(dateMap).sort();
-  const rowsB = dates.map(d => [formatTanggalPendek(d), String(dateMap[d].jumlah), formatRp(dateMap[d].kotor), formatRp(dateMap[d].nominal), formatRp(dateMap[d].untung)]);
+  const rowsB = dates.map(d => [
+    formatTanggalPendek(d), String(dateMap[d].jumlah), formatRp(dateMap[d].kotor), formatRp(dateMap[d].untung),
+    formatRp(dateMap[d].skabic), formatRp(dateMap[d].kas), formatRp(dateMap[d].produksi)
+  ]);
   if(dates.length){
-    rowsB.push(['TOTAL BULAN INI', String(entries.length), formatRp(grandKotor), formatRp(grandNominal), formatRp(grandUntung)]);
+    rowsB.push(['TOTAL BULAN INI', String(entries.length), formatRp(grandKotor), formatRp(grandUntung), formatRp(grandSkabic), formatRp(grandKas), formatRp(grandProduksi)]);
   }
 
   doc.autoTable({
     startY: y2 + 4,
-    head: [['Tanggal','Jml Transaksi','Omzet','Potongan SKABIC','Laba Bersih']],
-    body: rowsB.length ? rowsB : [['Tidak ada data','-','-','-','-']],
+    head: [['Tanggal','Trx','Omzet','Laba Bersih','SKABIC','Kas Jurusan','Pelaku Produksi']],
+    body: rowsB.length ? rowsB : [['Tidak ada data','-','-','-','-','-','-']],
     theme: 'striped',
-    headStyles:{ fillColor:[14,75,71], textColor:255, fontSize:8 },
-    bodyStyles:{ fontSize:8 },
+    headStyles:{ fillColor:[14,75,71], textColor:255, fontSize:7.3 },
+    bodyStyles:{ fontSize:7.3 },
     didParseCell: (data)=>{
       if(dates.length && data.row.index === rowsB.length-1 && data.section==='body'){
         data.cell.styles.fontStyle = 'bold';
@@ -904,6 +985,9 @@ function generateBulananPDF(bulanStr, jurusanKey, entries){
       }
     }
   });
+  doc.setFontSize(8);
+  doc.setTextColor(110,110,110);
+  doc.text('Catatan: Potongan SKABIC, Kas Jurusan, dan Pelaku Produksi dihitung dari Laba Bersih (bukan Omzet).', 14, doc.lastAutoTable.finalY + 8);
 
   pdfFooter(doc);
   doc.save(`SKABIC-Bulanan-${bulanStr}-${jurusanKey}.pdf`);
@@ -977,10 +1061,6 @@ function renderInputView(mv){
         <label class="field-label">Omzet (Rp)</label>
         <input type="number" inputmode="numeric" min="0" id="kotor-input" class="${state.formErrors.kotor?'has-error':''}" placeholder="cth. 500000" value="${state.form.kotor}">
         <div class="rp-preview" id="kotor-preview">${state.form.kotor?formatRp(state.form.kotor):''}</div>
-        <div class="potongan-box">
-          <div class="p-lbl">Potongan ke SKABIC (<span id="potongan-pct">${state.percent}%</span>)</div>
-          <div class="p-val" id="potongan-val">${formatRp(Math.round((Number(state.form.kotor)||0)*state.percent/100))}</div>
-        </div>
         ${state.formErrors.kotor ? `<p class="field-error" id="error-kotor">${state.formErrors.kotor}</p>` : ''}
       </div>
 
@@ -989,10 +1069,23 @@ function renderInputView(mv){
         <input type="number" inputmode="numeric" min="0" id="untung-input" class="${state.formErrors.untung?'has-error':''}" placeholder="cth. 150000" value="${state.form.untung}">
         <div class="rp-preview" id="untung-preview">${state.form.untung?formatRp(state.form.untung):''}</div>
         ${state.formErrors.untung ? `<p class="field-error" id="error-untung">${state.formErrors.untung}</p>` : ''}
+
+        <div class="potongan-box">
+          <div class="p-lbl">Potongan ke SKABIC (<span id="skabic-breakdown-pct">${state.percent}%</span>)</div>
+          <div class="p-val" id="skabic-breakdown-val">${formatRp(Math.round((Number(state.form.untung)||0)*state.percent/100))}</div>
+        </div>
+        <div class="potongan-box">
+          <div class="p-lbl">Kas Jurusan (<span id="kas-breakdown-pct">${state.percentKas}%</span>)</div>
+          <div class="p-val" id="kas-breakdown-val">${formatRp(Math.round((Number(state.form.untung)||0)*state.percentKas/100))}</div>
+        </div>
+        <div class="potongan-box">
+          <div class="p-lbl">Pelaku Produksi (<span id="produksi-breakdown-pct">${state.percentProduksi}%</span>)</div>
+          <div class="p-val" id="produksi-breakdown-val">${formatRp(Math.round((Number(state.form.untung)||0)*state.percentProduksi/100))}</div>
+        </div>
       </div>
 
       <button class="btn-primary" id="submit-btn">Simpan Data</button>
-      <p class="hint">Semua isian wajib dilengkapi. Data tidak akan tersimpan sebelum jurusan, tanggal, Omzet, dan Laba Bersih terisi dengan benar. Potongan ke SKABIC dihitung otomatis dari persentase yang diatur admin di menu Setting.</p>
+      <p class="hint">Semua isian wajib dilengkapi. Data tidak akan tersimpan sebelum jurusan, tanggal, Omzet, dan Laba Bersih terisi dengan benar. Potongan ke SKABIC, Kas Jurusan, dan Pelaku Produksi dihitung otomatis dari Laba Bersih sesuai persentase yang diatur admin di menu Setting.</p>
     </div>
   `;
   mv.querySelectorAll('[data-j]').forEach(el=>{
@@ -1101,7 +1194,7 @@ function renderRiwayatView(mv){
             <div class="j-badge" style="background:${jMap[e.jurusan].color};width:28px;height:28px;">${jMap[e.jurusan].icon.replace('width="17" height="17"','width="14" height="14"')}</div>
             <div class="entry-info">
               <div class="entry-jname">${jMap[e.jurusan].label}</div>
-              <div class="entry-figures">Omzet <b>${formatRp(e.kotor)}</b> · Potongan SKABIC ${entryPercent(e)}% <b>${formatRp(entryNominal(e))}</b><br>Laba Bersih <b>${formatRp(e.untung)}</b></div>
+              <div class="entry-figures">Omzet <b>${formatRp(e.kotor)}</b> · Laba Bersih <b>${formatRp(e.untung)}</b><br>SKABIC ${entryPercent(e)}% <b>${formatRp(entryNominal(e))}</b> · Kas Jurusan ${entryKasPercent(e)}% <b>${formatRp(entryKasNominal(e))}</b><br>Pelaku Produksi ${entryProduksiPercent(e)}% <b>${formatRp(entryProduksiNominal(e))}</b></div>
             </div>
           </div>
         `).join('')}
@@ -1123,43 +1216,52 @@ function renderDlResult(resultEl){
   }
   const jurusanList = state.dlJurusan==='semua' ? JURUSAN : [jMap[state.dlJurusan]];
   const agg = {};
-  jurusanList.forEach(j => agg[j.key] = { jumlah:0, kotor:0, nominal:0, untung:0 });
+  jurusanList.forEach(j => agg[j.key] = { jumlah:0, kotor:0, untung:0, skabic:0, kas:0, produksi:0 });
   entries.forEach(e=>{
     if(!agg[e.jurusan]) return;
-    agg[e.jurusan].jumlah++; agg[e.jurusan].kotor+=e.kotor; agg[e.jurusan].nominal+=entryNominal(e); agg[e.jurusan].untung+=e.untung;
+    agg[e.jurusan].jumlah++; agg[e.jurusan].kotor+=e.kotor; agg[e.jurusan].untung+=e.untung;
+    agg[e.jurusan].skabic+=entryNominal(e); agg[e.jurusan].kas+=entryKasNominal(e); agg[e.jurusan].produksi+=entryProduksiNominal(e);
   });
   const grandKotor = entries.reduce((s,e)=>s+e.kotor,0);
-  const grandNominal = entries.reduce((s,e)=>s+entryNominal(e),0);
   const grandUntung = entries.reduce((s,e)=>s+e.untung,0);
+  const grandSkabic = entries.reduce((s,e)=>s+entryNominal(e),0);
+  const grandKas = entries.reduce((s,e)=>s+entryKasNominal(e),0);
+  const grandProduksi = entries.reduce((s,e)=>s+entryProduksiNominal(e),0);
   const label = type==='harian' ? formatTanggalPendek(state.dlTanggal) : formatBulanTahun(state.dlBulan);
 
   resultEl.innerHTML = `
     <div class="card">
       <div class="stamp">${stampSVG(label, type==='harian')}</div>
-      <table class="rekap-table">
-        <thead><tr><th>Jurusan</th><th>Trx</th><th>Omzet</th><th>Potongan SKABIC</th><th>Laba Bersih</th></tr></thead>
+      <div style="overflow-x:auto;">
+      <table class="rekap-table" style="min-width:560px;">
+        <thead><tr><th>Jurusan</th><th>Trx</th><th>Omzet</th><th>Laba Bersih</th><th>SKABIC</th><th>Kas Jurusan</th><th>Pelaku Produksi</th></tr></thead>
         <tbody>
           ${jurusanList.map(j=>`
             <tr>
               <td class="jname"><span class="chip"><span class="dot" style="background:${j.color}"></span>${j.label}</span></td>
               <td>${agg[j.key].jumlah}</td>
               <td>${formatRp(agg[j.key].kotor)}</td>
-              <td>${formatRp(agg[j.key].nominal)}</td>
               <td>${formatRp(agg[j.key].untung)}</td>
+              <td>${formatRp(agg[j.key].skabic)}</td>
+              <td>${formatRp(agg[j.key].kas)}</td>
+              <td>${formatRp(agg[j.key].produksi)}</td>
             </tr>
           `).join('')}
           <tr class="total-row">
             <td class="jname">Total</td>
             <td>${entries.length}</td>
             <td>${formatRp(grandKotor)}</td>
-            <td>${formatRp(grandNominal)}</td>
             <td>${formatRp(grandUntung)}</td>
+            <td>${formatRp(grandSkabic)}</td>
+            <td>${formatRp(grandKas)}</td>
+            <td>${formatRp(grandProduksi)}</td>
           </tr>
         </tbody>
       </table>
+      </div>
       <div style="height:14px"></div>
       <button class="btn-secondary" id="dl-download-btn">${ICONS.download} Unduh PDF ${type==='harian'?'Harian':'Bulanan'}</button>
-      <p class="hint">File PDF memuat rincian tiap transaksi beserta persentase dan nominal potongan SKABIC${type==='bulanan' ? ', lengkap dengan rekap harian yang dijumlahkan selama satu bulan.' : '.'}</p>
+      <p class="hint">File PDF memuat rincian tiap transaksi beserta persentase dan nominal potongan SKABIC, Kas Jurusan, dan Pelaku Produksi (dihitung dari Laba Bersih)${type==='bulanan' ? ', lengkap dengan rekap harian yang dijumlahkan selama satu bulan.' : '.'}</p>
     </div>
   `;
   document.getElementById('dl-download-btn').addEventListener('click', ()=>{
@@ -1231,15 +1333,21 @@ function renderSettingView(mv){
     </div>
 
     <div class="card settings-section">
-      <h4>Persentase Potongan SKABIC</h4>
-      <div class="inline-row">
-        <div class="field">
-          <label class="field-label">Persentase (%)</label>
-          <input type="number" min="0" max="100" id="percent-input" value="${state.settingsPercentInput}">
-        </div>
-        <button class="btn-small gold" id="percent-save-btn" style="height:44px;">Simpan</button>
+      <h4>Persentase Pembagian Laba Bersih</h4>
+      <div class="field">
+        <label class="field-label">Potongan ke SKABIC (%)</label>
+        <input type="number" min="0" max="100" id="percent-skabic-input" value="${state.settingsPercentInput}">
       </div>
-      <p class="hint">Saat ini <b>${state.percent}%</b> dari setiap Omzet yang diinput akan otomatis dihitung sebagai potongan ke SKABIC. Perubahan ini langsung berlaku untuk input data berikutnya.</p>
+      <div class="field">
+        <label class="field-label">Kas Jurusan (%)</label>
+        <input type="number" min="0" max="100" id="percent-kas-input" value="${state.settingsPercentKasInput}">
+      </div>
+      <div class="field">
+        <label class="field-label">Pelaku Produksi (%)</label>
+        <input type="number" min="0" max="100" id="percent-produksi-input" value="${state.settingsPercentProduksiInput}">
+      </div>
+      <button class="btn-secondary" id="percent-save-btn">Simpan Semua Persentase</button>
+      <p class="hint">Saat ini setiap Laba Bersih yang diinput otomatis dibagi: SKABIC <b>${state.percent}%</b>, Kas Jurusan <b>${state.percentKas}%</b>, Pelaku Produksi <b>${state.percentProduksi}%</b>. Total ketiganya idealnya 100%. Perubahan langsung berlaku untuk input data berikutnya (data lama tidak berubah).</p>
     </div>
 
     <div class="card settings-section">
@@ -1268,7 +1376,9 @@ function renderSettingView(mv){
   const removeBtn = document.getElementById('logo-remove');
   if(removeBtn) removeBtn.addEventListener('click', ()=>{ if(confirm('Hapus logo SKABIC dari aplikasi?')) removeLogo(); });
 
-  document.getElementById('percent-input').addEventListener('input', e=> updatePercentInput(e.target.value));
+  document.getElementById('percent-skabic-input').addEventListener('input', e=> updatePercentInput('settingsPercentInput', e.target.value));
+  document.getElementById('percent-kas-input').addEventListener('input', e=> updatePercentInput('settingsPercentKasInput', e.target.value));
+  document.getElementById('percent-produksi-input').addEventListener('input', e=> updatePercentInput('settingsPercentProduksiInput', e.target.value));
   document.getElementById('percent-save-btn').addEventListener('click', savePercentSetting);
 
   document.getElementById('pass-new').addEventListener('input', e=> updateNewPass('settingsPassNew', e.target.value));
@@ -1329,7 +1439,7 @@ function renderAdminEntryList(container){
               <div class="j-badge" style="background:${jMap[e.jurusan].color};width:28px;height:28px;">${jMap[e.jurusan].icon.replace('width="17" height="17"','width="14" height="14"')}</div>
               <div class="entry-info">
                 <div class="entry-jname">${jMap[e.jurusan].label}</div>
-                <div class="entry-figures">Omzet <b>${formatRp(e.kotor)}</b> · Potongan ${entryPercent(e)}% <b>${formatRp(entryNominal(e))}</b><br>Laba Bersih <b>${formatRp(e.untung)}</b></div>
+                <div class="entry-figures">Omzet <b>${formatRp(e.kotor)}</b> · Laba Bersih <b>${formatRp(e.untung)}</b><br>SKABIC ${entryPercent(e)}% <b>${formatRp(entryNominal(e))}</b> · Kas Jurusan ${entryKasPercent(e)}% <b>${formatRp(entryKasNominal(e))}</b><br>Pelaku Produksi ${entryProduksiPercent(e)}% <b>${formatRp(entryProduksiNominal(e))}</b></div>
               </div>
               <div class="entry-actions">
                 <button class="icon-btn edit" data-editbtn="${e.id}">${ICONS.edit}</button>
