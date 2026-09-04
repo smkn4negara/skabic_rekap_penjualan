@@ -23,7 +23,7 @@
     --navy-deep:#0B2A45;
     --navy-deep-2:#0E4B47;
     --header-teal:#2C8377;
-    --btn-teal-dark:#0F5A52;
+    --btn-teal-dark:#2C8377;
     --bg-outer:#EEF2F1;
     --danger:#B23A3A;
     --hotel:#2C5F8A;
@@ -69,19 +69,19 @@
   }
   .brand-text{ position:relative; z-index:1; }
   .brand-text h1{ font-family:'Manrope',sans-serif; font-weight:800; font-size:22px; margin:0; letter-spacing:0.4px; }
-  .brand-text p{ margin:2px 0 0; font-size:12px; color:#AFC6C3; letter-spacing:0.3px; }
+  .brand-text p{ margin:2px 0 0; font-size:12px; color:#DDEEEB; letter-spacing:0.3px; }
   .topbar-summary{
     position:relative; z-index:1;
     margin-top:16px;
     display:flex; gap:10px;
   }
   .sum-card{
-    flex:1; background:rgba(255,255,255,0.07);
-    border:1px solid rgba(255,255,255,0.14);
+    flex:1; background:rgba(255,255,255,0.14);
+    border:1px solid rgba(255,255,255,0.22);
     border-radius:12px; padding:10px 12px;
   }
-  .sum-card .lbl{ font-size:10.5px; color:#A9C2BE; text-transform:uppercase; letter-spacing:0.6px;}
-  .sum-card .val{ font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:15px; margin-top:3px; color:#F0F7F6;}
+  .sum-card .lbl{ font-size:10.5px; color:#E4F3F0; text-transform:uppercase; letter-spacing:0.6px;}
+  .sum-card .val{ font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:15px; margin-top:3px; color:#FFFFFF;}
 
   /* ---------- Top Tabs (nav) ---------- */
   .top-tabs{
@@ -114,7 +114,7 @@
   /* ---------- Cards / Forms ---------- */
   .card{
     background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow);
-    padding:16px; margin-bottom:14px; border:1px solid rgba(20,32,46,0.04);
+    padding:16px; margin-bottom:14px; border:1px solid rgba(11,42,69,0.04);
   }
   label.field-label{
     display:block; font-size:11.5px; font-weight:600; color:var(--ink-soft);
@@ -144,7 +144,7 @@
     padding:11px 12px; font-size:14.5px; font-family:'IBM Plex Mono',monospace;
     background:#fff; color:var(--ink); outline:none;
   }
-  input:focus, select:focus{ border-color:var(--navy-deep); }
+  input:focus, select:focus{ border-color:var(--header-teal); }
   .field{ margin-bottom:14px; }
   .rp-preview{ font-size:11.5px; color:var(--gold); margin-top:5px; font-weight:600; font-family:'IBM Plex Mono',monospace;}
 
@@ -164,8 +164,8 @@
   }
   .btn-primary:active{ transform: translateY(1px); }
   .btn-secondary{
-    width:100%; border:1.5px solid var(--navy-deep); border-radius:11px; padding:11px 16px;
-    background:#fff; color:var(--navy-deep); font-weight:700; font-size:13.5px; cursor:pointer;
+    width:100%; border:1.5px solid var(--btn-teal-dark); border-radius:11px; padding:11px 16px;
+    background:#fff; color:var(--btn-teal-dark); font-weight:700; font-size:13.5px; cursor:pointer;
     font-family:'Inter',sans-serif; display:flex; align-items:center; justify-content:center; gap:6px;
   }
   .btn-secondary svg{ width:16px; height:16px; }
@@ -176,7 +176,7 @@
   }
   .btn-small svg{ width:13px;height:13px; }
   .btn-small.danger{ color:var(--danger); border-color:#EAD0D0; }
-  .btn-small.gold{ color:#0E4B47; border-color:var(--gold); background:var(--gold-soft); }
+  .btn-small.teal{ color:var(--btn-teal-dark); border-color:var(--btn-teal-dark); background:var(--gold-soft); }
 
   .toast{
     position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(10px);
@@ -186,6 +186,13 @@
     z-index:50; white-space:nowrap; max-width:88%; text-align:center;
   }
   .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  .staff-banner{
+    display:flex; justify-content:space-between; align-items:center; gap:10px;
+    background:var(--paper-alt); border:1px solid var(--paper-line); border-radius:11px;
+    padding:10px 14px; margin-bottom:14px; font-size:12.5px;
+  }
+  .staff-banner b{ color:var(--btn-teal-dark); }
 
   /* ---------- Riwayat ---------- */
   .filter-row{ display:flex; gap:8px; margin-bottom:14px; }
@@ -213,14 +220,14 @@
   .entry-row:last-child{ border-bottom:none; }
   .entry-info{ flex:1; min-width:0; }
   .entry-jname{ font-size:12.5px; font-weight:700; }
-  .entry-figures{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-soft); margin-top:2px; line-height:1.6;}
+  .entry-figures{ font-family:'IBM Plex Mono',monospace; font-size:10.8px; color:var(--ink-soft); margin-top:2px; line-height:1.65;}
   .entry-figures b{ color:var(--ink); font-weight:600; }
   .entry-actions{ display:flex; gap:6px; flex-shrink:0; }
   .icon-btn{
     border:none; background:transparent; color:#C9CFD6; cursor:pointer; padding:6px;
     display:flex;
   }
-  .icon-btn.edit:hover{ color:var(--navy-deep); }
+  .icon-btn.edit:hover{ color:var(--btn-teal-dark); }
   .icon-btn.del:hover{ color:var(--danger); }
   .icon-btn svg{ width:16px;height:16px; }
 
@@ -229,7 +236,7 @@
     background:var(--gold-soft); border-radius:9px; padding:9px 12px; margin:10px 0 4px;
   }
   .day-total .t-lbl{ font-size:11px; font-weight:700; color:#0E4B47; text-transform:uppercase; letter-spacing:0.4px;}
-  .day-total .t-val{ font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:12.5px; color:#0B3330;}
+  .day-total .t-val{ font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:12px; color:#0B3330;}
 
   .stamp{ width:104px;height:104px; margin:6px auto 4px; position:relative; }
   .stamp svg{ width:100%; height:100%; }
@@ -243,12 +250,12 @@
 
   table.rekap-table{ width:100%; border-collapse:collapse; margin-top:6px; }
   table.rekap-table th{
-    text-align:left; font-size:10px; text-transform:uppercase; letter-spacing:0.4px;
-    color:var(--ink-soft); padding:6px 6px; border-bottom:1.5px solid var(--paper-line);
+    text-align:left; font-size:9.5px; text-transform:uppercase; letter-spacing:0.3px;
+    color:var(--ink-soft); padding:6px 6px; border-bottom:1.5px solid var(--paper-line); white-space:nowrap;
   }
   table.rekap-table td{
-    padding:8px 6px; font-size:11.5px; border-bottom:1px dashed var(--paper-line);
-    font-family:'IBM Plex Mono',monospace;
+    padding:8px 6px; font-size:11px; border-bottom:1px dashed var(--paper-line);
+    font-family:'IBM Plex Mono',monospace; white-space:nowrap;
   }
   table.rekap-table td.jname{ font-family:'Inter',sans-serif; font-weight:700; font-size:12px; }
   table.rekap-table tr.total-row td{
@@ -258,12 +265,12 @@
   .dot{ width:8px;height:8px;border-radius:50%; }
   .hint{ font-size:11px; color:var(--ink-soft); margin-top:6px; line-height:1.5;}
 
-  /* ---------- Password gate ---------- */
+  /* ---------- Password / NIP login gate ---------- */
   .password-screen{ text-align:center; padding:30px 6px 10px; }
   .lock-badge{
     width:60px;height:60px;border-radius:50%; margin:0 auto 16px;
     background:var(--gold-soft); display:flex;align-items:center;justify-content:center;
-    color:#0E4B47;
+    color:var(--btn-teal-dark);
   }
   .lock-badge svg{ width:26px;height:26px; }
   .password-screen h3{ font-family:'Manrope',sans-serif; font-weight:600; font-size:17px; margin:0 0 4px; }
@@ -272,7 +279,7 @@
   /* ---------- Settings ---------- */
   .settings-section{ margin-bottom:20px; }
   .settings-section h4{ font-family:'Manrope',sans-serif; font-weight:600; font-size:14.5px; margin:0 0 10px; display:flex; align-items:center; gap:6px; }
-  .settings-section h4 svg{ width:16px; height:16px; flex-shrink:0; color:var(--navy-deep-2); }
+  .settings-section h4 svg{ width:16px; height:16px; flex-shrink:0; color:var(--btn-teal-dark); }
   .logo-preview-wrap{ display:flex; flex-direction:column; align-items:center; gap:12px; padding:6px 0 4px; }
   .logo-preview-banner{
     width:100%; max-width:260px; height:80px; border-radius:12px; overflow:hidden;
@@ -283,8 +290,8 @@
   .logo-preview-banner .ph{ font-family:'Manrope',sans-serif; font-weight:700; font-size:15px; color:var(--ink-soft); text-align:center; padding:0 10px; }
   .file-label{
     display:inline-flex; align-items:center; justify-content:center; gap:6px;
-    border:1.5px solid var(--navy-deep); border-radius:11px; padding:11px 16px;
-    background:#fff; color:var(--navy-deep); font-weight:700; font-size:13.5px; cursor:pointer;
+    border:1.5px solid var(--btn-teal-dark); border-radius:11px; padding:11px 16px;
+    background:#fff; color:var(--btn-teal-dark); font-weight:700; font-size:13.5px; cursor:pointer;
     font-family:'Inter',sans-serif; width:100%;
   }
   .file-label svg{ width:16px;height:16px; }
@@ -292,9 +299,9 @@
     width:100%; border:none; background:transparent; color:var(--danger); font-weight:600;
     font-size:12.5px; padding:10px; cursor:pointer; font-family:'Inter',sans-serif;
   }
-  .inline-row{ display:flex; gap:8px; align-items:flex-end; }
-  .inline-row .field{ flex:1; margin-bottom:0; }
-  .divider{ height:1px; background:var(--paper-line); margin:18px 0; }
+  .inline-row{ display:flex; gap:8px; }
+  .inline-row .field{ flex:1; margin-bottom:10px; }
+  .divider{ height:1px; background:var(--paper-line); margin:16px 0; }
   .edit-form{ background:var(--paper-alt); border-radius:11px; padding:12px; margin:6px 0 12px; border:1.5px solid var(--paper-line); }
   .edit-form .field{ margin-bottom:10px; }
   .edit-actions{ display:flex; gap:8px; margin-top:4px; }
@@ -309,6 +316,12 @@
   .db-status .dot2{ width:8px;height:8px;border-radius:50%; flex-shrink:0; }
   .db-status.connected .dot2{ background:#2F9165; }
   .db-status.disconnected .dot2{ background:#C99A46; }
+
+  .percent-total-note{
+    font-size:11.5px; font-weight:700; padding:8px 12px; border-radius:9px; margin:4px 0 12px;
+  }
+  .percent-total-note.ok{ background:#E1EFEA; color:#1F5B47; }
+  .percent-total-note.warn{ background:#FBF0E0; color:#8A5A1E; }
 </style>
 </head>
 <body>
@@ -316,10 +329,21 @@
 
 <script>
 /* ============ CONFIG ============ */
+// Isi kedua nilai di bawah ini secara manual dengan Project URL dan
+// Anon (public) Key dari Supabase Anda. Jika dikosongkan (''), aplikasi
+// otomatis memakai penyimpanan bawaan sebagai cadangan.
+const SUPABASE_URL = '';
+const SUPABASE_ANON_KEY = '';
+
 const DEFAULT_PASSWORD = 'skabic123';
-const DEFAULT_PERCENT = 25;
-const DEFAULT_PERCENT_KAS = 45;
-const DEFAULT_PERCENT_PRODUKSI = 30;
+
+const KATEGORI_POTONGAN = [
+  { key:'pengembangan', label:'Pengembangan SKABIC Jurusan', short:'Pengembangan', col:'pengembangan', def:10 },
+  { key:'pemeliharaan', label:'Pemeliharaan Alat Jurusan', short:'Pemeliharaan Alat', col:'pemeliharaan', def:5 },
+  { key:'kasJurusan', label:'Kas Jurusan', short:'Kas Jurusan', col:'kas_jurusan', def:30 },
+  { key:'kasSkabic', label:'Kas SKABIC', short:'Kas SKABIC', col:'kas_skabic', def:25 },
+  { key:'produksi', label:'Pelaku Produksi', short:'Pelaku Produksi', col:'produksi', def:30 },
+];
 
 const JURUSAN = [
   { key:'hotel', label:'Perhotelan', color:'var(--hotel)', bg:'var(--hotel-bg)',
@@ -345,6 +369,8 @@ const ICONS = {
   lock: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>`,
   logout: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>`,
   database: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>`,
+  idcard: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M15 9h4M15 13h4M6 17c.5-2 2-3 3-3s2.5 1 3 3"/></svg>`,
+  users: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>`,
 };
 
 /* ============ STATE ============ */
@@ -352,15 +378,18 @@ let state = {
   currentView: 'input',
   loading: true,
   entries: [],
+  staffList: [],
   logo: null,
-  percent: DEFAULT_PERCENT,
-  percentKas: DEFAULT_PERCENT_KAS,
-  percentProduksi: DEFAULT_PERCENT_PRODUKSI,
+  percentages: Object.fromEntries(KATEGORI_POTONGAN.map(k=>[k.key, k.def])),
   password: DEFAULT_PASSWORD,
   isAdmin: false,
   passwordInput: '',
   supabaseClient: null,
   supabaseConnected: false,
+
+  loggedInStaff: null,
+  nipInput: '',
+
   form: { jurusan:null, tanggal: todayStr(), kotor:'', untung:'' },
   formErrors: {},
   filterJurusan: 'semua',
@@ -369,13 +398,17 @@ let state = {
   dlBulan: currentMonthStr(),
   dlJurusan: 'semua',
   dlResult: null,
+
   adminEditId: null,
   adminEditForm: null,
-  settingsPercentInput: String(DEFAULT_PERCENT),
-  settingsPercentKasInput: String(DEFAULT_PERCENT_KAS),
-  settingsPercentProduksiInput: String(DEFAULT_PERCENT_PRODUKSI),
+  settingsPercentInputs: Object.fromEntries(KATEGORI_POTONGAN.map(k=>[k.key, String(k.def)])),
   settingsPassNew: '',
   settingsPassNew2: '',
+
+  newStaffNip: '',
+  newStaffNama: '',
+  adminStaffEditId: null,
+  adminStaffEditForm: null,
 };
 
 function todayStr(){
@@ -401,14 +434,22 @@ function formatBulanTahun(mstr){
 function uid(){ return 'e' + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
 function jurusanLabelFor(key){ return key==='semua' ? 'Semua Jurusan' : jMap[key].label; }
 
-/* ============ SUPABASE CONNECTION ============ */
-// Isi kedua nilai di bawah ini secara manual dengan Project URL dan
-// Anon (public) Key dari Supabase Anda. Lihat langkah lengkapnya di
-// panduan yang diberikan bersama file ini. Jika dikosongkan (''),
-// aplikasi otomatis memakai penyimpanan bawaan sebagai cadangan.
-const SUPABASE_URL = '';
-const SUPABASE_ANON_KEY = '';
+function computeBreakdown(untung){
+  const out = {};
+  KATEGORI_POTONGAN.forEach(k=>{
+    const pct = state.percentages[k.key];
+    out[k.key] = { percent: pct, nominal: Math.round(untung * pct/100) };
+  });
+  return out;
+}
+function entryFieldPercent(e, key){ const v = e[key+'Percent']; return v!=null ? v : state.percentages[key]; }
+function entryFieldNominal(e, key){
+  const v = e[key+'Nominal'];
+  if(v!=null) return v;
+  return Math.round(e.untung * entryFieldPercent(e,key)/100);
+}
 
+/* ============ SUPABASE CONNECTION ============ */
 async function connectSupabase(url, key){
   if(!url || !key) return false;
   try{
@@ -427,28 +468,13 @@ async function connectSupabase(url, key){
 }
 
 /* ============ STORAGE / DB LAYER ============ */
-async function loadAll(){
-  let supabaseReady = false;
-  const supabaseConfigured = !!(SUPABASE_URL && SUPABASE_ANON_KEY);
-  if(supabaseConfigured){
-    supabaseReady = await connectSupabase(SUPABASE_URL, SUPABASE_ANON_KEY);
-  }
-
-  if(supabaseReady){
-    await dbLoadEntriesFromSupabase();
-    await dbLoadSettingsFromSupabase();
-  }else{
-    await dbLoadEntriesFromLocal();
-    await dbLoadSettingsFromLocal();
-  }
-  state.settingsPercentInput = String(state.percent);
-  state.settingsPercentKasInput = String(state.percentKas);
-  state.settingsPercentProduksiInput = String(state.percentProduksi);
-  state.loading = false;
-  render();
-  if(supabaseConfigured && !supabaseReady){
-    setTimeout(()=> showToast('Gagal terhubung ke Supabase, memakai penyimpanan bawaan sementara.'), 300);
-  }
+function percentagesFromSettingsRow(row){
+  const out = {};
+  KATEGORI_POTONGAN.forEach(k=>{
+    const col = 'percent_'+k.col;
+    out[k.key] = row && row[col]!=null ? Number(row[col]) : k.def;
+  });
+  return out;
 }
 
 async function dbLoadEntriesFromSupabase(){
@@ -456,16 +482,19 @@ async function dbLoadEntriesFromSupabase(){
     const { data, error } = await state.supabaseClient
       .from('skabic_entries').select('*').order('tanggal', { ascending:false });
     if(error) throw error;
-    state.entries = (data||[]).map(r=>({
-      id: r.id, jurusan: r.jurusan, tanggal: r.tanggal,
-      kotor: Number(r.kotor), untung: Number(r.untung),
-      skabicPercent: Number(r.skabic_percent), skabicNominal: Number(r.skabic_nominal),
-      kasPercent: r.kas_percent!=null ? Number(r.kas_percent) : null,
-      kasNominal: r.kas_nominal!=null ? Number(r.kas_nominal) : null,
-      produksiPercent: r.produksi_percent!=null ? Number(r.produksi_percent) : null,
-      produksiNominal: r.produksi_nominal!=null ? Number(r.produksi_nominal) : null,
-      createdAt: Number(r.created_at)
-    }));
+    state.entries = (data||[]).map(r=>{
+      const obj = {
+        id: r.id, jurusan: r.jurusan, tanggal: r.tanggal,
+        kotor: Number(r.kotor), untung: Number(r.untung),
+        nip: r.nip || null, namaPetugas: r.nama_petugas || null,
+        createdAt: Number(r.created_at)
+      };
+      KATEGORI_POTONGAN.forEach(k=>{
+        obj[k.key+'Percent'] = r[k.col+'_percent']!=null ? Number(r[k.col+'_percent']) : null;
+        obj[k.key+'Nominal'] = r[k.col+'_nominal']!=null ? Number(r[k.col+'_nominal']) : null;
+      });
+      return obj;
+    });
   }catch(e){
     showToast('Gagal memuat data dari Supabase');
     state.entries = [];
@@ -477,14 +506,21 @@ async function dbLoadSettingsFromSupabase(){
       .from('skabic_settings').select('*').eq('id',1).maybeSingle();
     if(error) throw error;
     state.logo = data && data.logo ? data.logo : null;
-    state.percent = data && data.percent!=null ? Number(data.percent) : DEFAULT_PERCENT;
-    state.percentKas = data && data.percent_kas!=null ? Number(data.percent_kas) : DEFAULT_PERCENT_KAS;
-    state.percentProduksi = data && data.percent_produksi!=null ? Number(data.percent_produksi) : DEFAULT_PERCENT_PRODUKSI;
+    state.percentages = percentagesFromSettingsRow(data);
     state.password = data && data.password ? data.password : DEFAULT_PASSWORD;
   }catch(e){
-    state.logo = null; state.percent = DEFAULT_PERCENT; state.percentKas = DEFAULT_PERCENT_KAS;
-    state.percentProduksi = DEFAULT_PERCENT_PRODUKSI; state.password = DEFAULT_PASSWORD;
+    state.logo = null;
+    state.percentages = Object.fromEntries(KATEGORI_POTONGAN.map(k=>[k.key, k.def]));
+    state.password = DEFAULT_PASSWORD;
   }
+}
+async function dbLoadStaffFromSupabase(){
+  try{
+    const { data, error } = await state.supabaseClient
+      .from('skabic_staff').select('*').order('nama', { ascending:true });
+    if(error) throw error;
+    state.staffList = (data||[]).map(r=>({ id:r.id, nip:String(r.nip), nama:r.nama }));
+  }catch(e){ state.staffList = []; }
 }
 async function dbLoadEntriesFromLocal(){
   try{
@@ -498,21 +534,19 @@ async function dbLoadSettingsFromLocal(){
     state.logo = res && res.value ? res.value : null;
   }catch(e){ state.logo = null; }
   try{
-    const res = await window.storage.get('skabic-percent', true);
-    state.percent = res && res.value ? Number(res.value) : DEFAULT_PERCENT;
-  }catch(e){ state.percent = DEFAULT_PERCENT; }
-  try{
-    const res = await window.storage.get('skabic-percent-kas', true);
-    state.percentKas = res && res.value ? Number(res.value) : DEFAULT_PERCENT_KAS;
-  }catch(e){ state.percentKas = DEFAULT_PERCENT_KAS; }
-  try{
-    const res = await window.storage.get('skabic-percent-produksi', true);
-    state.percentProduksi = res && res.value ? Number(res.value) : DEFAULT_PERCENT_PRODUKSI;
-  }catch(e){ state.percentProduksi = DEFAULT_PERCENT_PRODUKSI; }
+    const res = await window.storage.get('skabic-percentages', true);
+    state.percentages = res && res.value ? JSON.parse(res.value) : Object.fromEntries(KATEGORI_POTONGAN.map(k=>[k.key, k.def]));
+  }catch(e){ state.percentages = Object.fromEntries(KATEGORI_POTONGAN.map(k=>[k.key, k.def])); }
   try{
     const res = await window.storage.get('skabic-password', true);
     state.password = res && res.value ? res.value : DEFAULT_PASSWORD;
   }catch(e){ state.password = DEFAULT_PASSWORD; }
+}
+async function dbLoadStaffFromLocal(){
+  try{
+    const res = await window.storage.get('skabic-staff', true);
+    state.staffList = res && res.value ? JSON.parse(res.value) : [];
+  }catch(e){ state.staffList = []; }
 }
 
 async function persistEntries(){
@@ -521,17 +555,24 @@ async function persistEntries(){
     catch(e){ showToast('Gagal menyimpan ke server, coba lagi.'); }
   }
 }
+async function persistStaffLocal(){
+  try{ await window.storage.set('skabic-staff', JSON.stringify(state.staffList), true); }
+  catch(e){ showToast('Gagal menyimpan data login'); }
+}
+
 async function dbInsertEntry(entry){
   if(state.supabaseConnected){
     try{
-      const { error } = await state.supabaseClient.from('skabic_entries').insert({
+      const payload = {
         id: entry.id, jurusan: entry.jurusan, tanggal: entry.tanggal,
         kotor: entry.kotor, untung: entry.untung,
-        skabic_percent: entry.skabicPercent, skabic_nominal: entry.skabicNominal,
-        kas_percent: entry.kasPercent, kas_nominal: entry.kasNominal,
-        produksi_percent: entry.produksiPercent, produksi_nominal: entry.produksiNominal,
-        created_at: entry.createdAt
+        nip: entry.nip, nama_petugas: entry.namaPetugas, created_at: entry.createdAt
+      };
+      KATEGORI_POTONGAN.forEach(k=>{
+        payload[k.col+'_percent'] = entry[k.key+'Percent'];
+        payload[k.col+'_nominal'] = entry[k.key+'Nominal'];
       });
+      const { error } = await state.supabaseClient.from('skabic_entries').insert(payload);
       if(error) throw error;
     }catch(e){ showToast('Gagal menyimpan ke Supabase'); }
   }else{
@@ -541,13 +582,15 @@ async function dbInsertEntry(entry){
 async function dbUpdateEntry(id, fields){
   if(state.supabaseConnected){
     try{
-      const { error } = await state.supabaseClient.from('skabic_entries').update({
+      const payload = {
         jurusan: fields.jurusan, tanggal: fields.tanggal,
-        kotor: fields.kotor, untung: fields.untung,
-        skabic_percent: fields.skabicPercent, skabic_nominal: fields.skabicNominal,
-        kas_percent: fields.kasPercent, kas_nominal: fields.kasNominal,
-        produksi_percent: fields.produksiPercent, produksi_nominal: fields.produksiNominal
-      }).eq('id', id);
+        kotor: fields.kotor, untung: fields.untung
+      };
+      KATEGORI_POTONGAN.forEach(k=>{
+        payload[k.col+'_percent'] = fields[k.key+'Percent'];
+        payload[k.col+'_nominal'] = fields[k.key+'Nominal'];
+      });
+      const { error } = await state.supabaseClient.from('skabic_entries').update(payload).eq('id', id);
       if(error) throw error;
     }catch(e){ showToast('Gagal memperbarui data di Supabase'); }
   }else{
@@ -569,10 +612,10 @@ async function dbSaveSettings(fields){
     try{
       const payload = { id:1 };
       if('logo' in fields) payload.logo = fields.logo;
-      if('percent' in fields) payload.percent = fields.percent;
-      if('percentKas' in fields) payload.percent_kas = fields.percentKas;
-      if('percentProduksi' in fields) payload.percent_produksi = fields.percentProduksi;
       if('password' in fields) payload.password = fields.password;
+      if('percentages' in fields){
+        KATEGORI_POTONGAN.forEach(k=>{ payload['percent_'+k.col] = fields.percentages[k.key]; });
+      }
       const { error } = await state.supabaseClient.from('skabic_settings').upsert(payload);
       if(error) throw error;
       return true;
@@ -583,12 +626,46 @@ async function dbSaveSettings(fields){
         if(fields.logo) await window.storage.set('skabic-logo', fields.logo, true);
         else await window.storage.delete('skabic-logo', true);
       }
-      if('percent' in fields) await window.storage.set('skabic-percent', String(fields.percent), true);
-      if('percentKas' in fields) await window.storage.set('skabic-percent-kas', String(fields.percentKas), true);
-      if('percentProduksi' in fields) await window.storage.set('skabic-percent-produksi', String(fields.percentProduksi), true);
       if('password' in fields) await window.storage.set('skabic-password', fields.password, true);
+      if('percentages' in fields) await window.storage.set('skabic-percentages', JSON.stringify(fields.percentages), true);
       return true;
     }catch(e){ showToast('Gagal menyimpan pengaturan'); return false; }
+  }
+}
+async function dbInsertStaff(staff){
+  if(state.supabaseConnected){
+    try{
+      const { error } = await state.supabaseClient.from('skabic_staff').insert({
+        id: staff.id, nip: staff.nip, nama: staff.nama, created_at: staff.createdAt
+      });
+      if(error) throw error;
+      return true;
+    }catch(e){ showToast('Gagal menyimpan data login ke Supabase (NIP mungkin sudah terdaftar)'); return false; }
+  }else{
+    await persistStaffLocal();
+    return true;
+  }
+}
+async function dbUpdateStaff(id, fields){
+  if(state.supabaseConnected){
+    try{
+      const { error } = await state.supabaseClient.from('skabic_staff').update({ nip:fields.nip, nama:fields.nama }).eq('id', id);
+      if(error) throw error;
+      return true;
+    }catch(e){ showToast('Gagal memperbarui data login di Supabase'); return false; }
+  }else{
+    await persistStaffLocal();
+    return true;
+  }
+}
+async function dbDeleteStaff(id){
+  if(state.supabaseConnected){
+    try{
+      const { error } = await state.supabaseClient.from('skabic_staff').delete().eq('id', id);
+      if(error) throw error;
+    }catch(e){ showToast('Gagal menghapus data login di Supabase'); }
+  }else{
+    await persistStaffLocal();
   }
 }
 async function saveLogo(dataUrl){ return dbSaveSettings({ logo:dataUrl }); }
@@ -630,6 +707,29 @@ async function handleLogoUpload(file){
   }catch(e){ showToast('Gagal memproses gambar'); }
 }
 
+async function loadAll(){
+  let supabaseReady = false;
+  const supabaseConfigured = !!(SUPABASE_URL && SUPABASE_ANON_KEY);
+  if(supabaseConfigured){
+    supabaseReady = await connectSupabase(SUPABASE_URL, SUPABASE_ANON_KEY);
+  }
+  if(supabaseReady){
+    await dbLoadEntriesFromSupabase();
+    await dbLoadSettingsFromSupabase();
+    await dbLoadStaffFromSupabase();
+  }else{
+    await dbLoadEntriesFromLocal();
+    await dbLoadSettingsFromLocal();
+    await dbLoadStaffFromLocal();
+  }
+  state.settingsPercentInputs = Object.fromEntries(KATEGORI_POTONGAN.map(k=>[k.key, String(state.percentages[k.key])]));
+  state.loading = false;
+  render();
+  if(supabaseConfigured && !supabaseReady){
+    setTimeout(()=> showToast('Gagal terhubung ke Supabase, memakai penyimpanan bawaan sementara.'), 300);
+  }
+}
+
 /* ============ TOAST ============ */
 function showToast(msg){
   const t = document.getElementById('toast');
@@ -646,6 +746,25 @@ function setView(v){
   if(v==='riwayat'){ state.dlResult = null; }
   render();
 }
+
+/* ============ NIP LOGIN (menu Input) ============ */
+function updateNipInput(val){ state.nipInput = val; }
+function submitNipLogin(){
+  const nip = state.nipInput.trim();
+  if(!nip){ showToast('Masukkan Nomor NIP'); return; }
+  const found = state.staffList.find(s=> s.nip === nip);
+  if(!found){
+    showToast('NIP tidak terdaftar. Hubungi admin untuk didaftarkan.');
+    state.nipInput = '';
+    render();
+    return;
+  }
+  state.loggedInStaff = found;
+  state.nipInput = '';
+  showToast('Selamat datang, ' + found.nama);
+  render();
+}
+function logoutStaff(){ state.loggedInStaff = null; render(); }
 
 /* ============ INPUT FORM ============ */
 function selectJurusan(key){
@@ -672,20 +791,13 @@ function renderRpPreview(){
   if(uEl) uEl.textContent = state.form.untung ? formatRp(state.form.untung) : '';
 
   const untung = Number(state.form.untung)||0;
-  const skabicVal = document.getElementById('skabic-breakdown-val');
-  const skabicPct = document.getElementById('skabic-breakdown-pct');
-  if(skabicVal) skabicVal.textContent = formatRp(Math.round(untung * state.percent/100));
-  if(skabicPct) skabicPct.textContent = state.percent + '%';
-
-  const kasVal = document.getElementById('kas-breakdown-val');
-  const kasPct = document.getElementById('kas-breakdown-pct');
-  if(kasVal) kasVal.textContent = formatRp(Math.round(untung * state.percentKas/100));
-  if(kasPct) kasPct.textContent = state.percentKas + '%';
-
-  const produksiVal = document.getElementById('produksi-breakdown-val');
-  const produksiPct = document.getElementById('produksi-breakdown-pct');
-  if(produksiVal) produksiVal.textContent = formatRp(Math.round(untung * state.percentProduksi/100));
-  if(produksiPct) produksiPct.textContent = state.percentProduksi + '%';
+  const breakdown = computeBreakdown(untung);
+  KATEGORI_POTONGAN.forEach(k=>{
+    const valEl = document.getElementById('bd-val-'+k.key);
+    const pctEl = document.getElementById('bd-pct-'+k.key);
+    if(valEl) valEl.textContent = formatRp(breakdown[k.key].nominal);
+    if(pctEl) pctEl.textContent = breakdown[k.key].percent + '%';
+  });
 }
 
 async function submitEntry(){
@@ -706,14 +818,17 @@ async function submitEntry(){
   }
 
   state.formErrors = {};
-  const percent = state.percent, percentKas = state.percentKas, percentProduksi = state.percentProduksi;
+  const breakdown = computeBreakdown(untung);
   const newEntry = {
     id: uid(), jurusan: f.jurusan, tanggal: f.tanggal, kotor, untung,
-    skabicPercent: percent, skabicNominal: Math.round(untung * percent/100),
-    kasPercent: percentKas, kasNominal: Math.round(untung * percentKas/100),
-    produksiPercent: percentProduksi, produksiNominal: Math.round(untung * percentProduksi/100),
+    nip: state.loggedInStaff ? state.loggedInStaff.nip : null,
+    namaPetugas: state.loggedInStaff ? state.loggedInStaff.nama : null,
     createdAt: Date.now()
   };
+  KATEGORI_POTONGAN.forEach(k=>{
+    newEntry[k.key+'Percent'] = breakdown[k.key].percent;
+    newEntry[k.key+'Nominal'] = breakdown[k.key].nominal;
+  });
   state.entries.push(newEntry);
   await dbInsertEntry(newEntry);
   showToast('Data berhasil disimpan');
@@ -753,23 +868,21 @@ function submitPasswordGate(){
 }
 function logoutAdmin(){
   state.isAdmin = false; state.adminEditId=null; state.adminEditForm=null;
+  state.adminStaffEditId=null; state.adminStaffEditForm=null;
   showToast('Keluar dari mode admin');
   render();
 }
-function updatePercentInput(field, val){ state[field] = val; }
+
+function updatePercentInput(key, val){ state.settingsPercentInputs[key] = val; }
 async function savePercentSetting(){
-  const valSkabic = Number(state.settingsPercentInput);
-  const valKas = Number(state.settingsPercentKasInput);
-  const valProduksi = Number(state.settingsPercentProduksiInput);
-  if([valSkabic, valKas, valProduksi].some(v=> isNaN(v) || v<0 || v>100)){
-    showToast('Masukkan persentase antara 0-100 untuk semua kolom');
-    return;
+  const values = {};
+  for(const k of KATEGORI_POTONGAN){
+    const v = Number(state.settingsPercentInputs[k.key]);
+    if(isNaN(v) || v<0 || v>100){ showToast('Masukkan persentase antara 0-100 untuk semua kolom'); return; }
+    values[k.key] = v;
   }
-  const ok = await dbSaveSettings({ percent: valSkabic, percentKas: valKas, percentProduksi: valProduksi });
-  if(ok){
-    state.percent = valSkabic; state.percentKas = valKas; state.percentProduksi = valProduksi;
-    showToast('Persentase berhasil diperbarui');
-  }
+  const ok = await dbSaveSettings({ percentages: values });
+  if(ok){ state.percentages = values; showToast('Persentase berhasil diperbarui'); }
   render();
 }
 function updateNewPass(field, val){ state[field] = val; }
@@ -798,14 +911,12 @@ async function saveEditEntry(){
   if(isNaN(kotor) || kotor<0 || isNaN(untung) || untung<0){ showToast('Nominal tidak valid'); return; }
   const idx = state.entries.findIndex(x=>x.id===state.adminEditId);
   if(idx===-1) return;
-  const percent = state.percent, percentKas = state.percentKas, percentProduksi = state.percentProduksi;
-  const updated = {
-    ...state.entries[idx],
-    jurusan:f.jurusan, tanggal:f.tanggal, kotor, untung,
-    skabicPercent:percent, skabicNominal: Math.round(untung*percent/100),
-    kasPercent:percentKas, kasNominal: Math.round(untung*percentKas/100),
-    produksiPercent:percentProduksi, produksiNominal: Math.round(untung*percentProduksi/100)
-  };
+  const breakdown = computeBreakdown(untung);
+  const updated = { ...state.entries[idx], jurusan:f.jurusan, tanggal:f.tanggal, kotor, untung };
+  KATEGORI_POTONGAN.forEach(k=>{
+    updated[k.key+'Percent'] = breakdown[k.key].percent;
+    updated[k.key+'Nominal'] = breakdown[k.key].nominal;
+  });
   state.entries[idx] = updated;
   await dbUpdateEntry(state.adminEditId, updated);
   state.adminEditId=null; state.adminEditForm=null;
@@ -820,10 +931,60 @@ async function deleteEntryAdmin(id){
 }
 function setFilterJurusan(val){ state.filterJurusan = val; render(); }
 
+/* ============ ADMIN: Kelola Data Login (NIP) ============ */
+function updateNewStaffField(field, val){ state[field] = val; }
+async function addStaffHandler(){
+  const nip = state.newStaffNip.trim();
+  const nama = state.newStaffNama.trim();
+  if(!nip || !nama){ showToast('Isi NIP dan Nama petugas'); return; }
+  if(state.staffList.some(s=>s.nip===nip)){ showToast('NIP tersebut sudah terdaftar'); return; }
+  const staff = { id: uid(), nip, nama, createdAt: Date.now() };
+  if(state.supabaseConnected){
+    const ok = await dbInsertStaff(staff);
+    if(!ok){ render(); return; }
+    state.staffList.push(staff);
+  }else{
+    state.staffList.push(staff);
+    await dbInsertStaff(staff);
+  }
+  state.newStaffNip=''; state.newStaffNama='';
+  showToast('Petugas berhasil ditambahkan');
+  render();
+}
+function startEditStaff(id){
+  const s = state.staffList.find(x=>x.id===id);
+  if(!s) return;
+  state.adminStaffEditId = id;
+  state.adminStaffEditForm = { nip:s.nip, nama:s.nama };
+  render();
+}
+function cancelEditStaff(){ state.adminStaffEditId=null; state.adminStaffEditForm=null; render(); }
+function updateStaffEditForm(field, val){ state.adminStaffEditForm[field] = val; }
+async function saveStaffEdit(){
+  const f = state.adminStaffEditForm;
+  const nip = f.nip.trim(), nama = f.nama.trim();
+  if(!nip || !nama){ showToast('Lengkapi NIP dan Nama'); return; }
+  if(state.staffList.some(s=> s.nip===nip && s.id!==state.adminStaffEditId)){ showToast('NIP sudah dipakai petugas lain'); return; }
+  const idx = state.staffList.findIndex(x=>x.id===state.adminStaffEditId);
+  if(idx===-1) return;
+  state.staffList[idx] = { ...state.staffList[idx], nip, nama };
+  await dbUpdateStaff(state.adminStaffEditId, state.staffList[idx]);
+  state.adminStaffEditId=null; state.adminStaffEditForm=null;
+  showToast('Data petugas berhasil diperbarui');
+  render();
+}
+async function deleteStaffAdmin(id){
+  state.staffList = state.staffList.filter(s=>s.id!==id);
+  await dbDeleteStaff(id);
+  showToast('Data petugas dihapus');
+  render();
+}
+
 /* ============ PDF GENERATION ============ */
 function pdfHeader(doc, title, subtitle){
+  const pageWidth = doc.internal.pageSize.getWidth();
   doc.setFillColor(11,42,69);
-  doc.rect(0,0,210,26,'F');
+  doc.rect(0,0,pageWidth,26,'F');
   if(state.logo){
     try{ doc.addImage(state.logo, 'PNG', 12, 5, 62, 16); }catch(e){ /* ignore malformed image */ }
   }else{
@@ -846,59 +1007,48 @@ function pdfHeader(doc, title, subtitle){
   doc.text(subtitle, 14, 40);
 }
 function pdfFooter(doc){
+  const pageHeight = doc.internal.pageSize.getHeight();
   const pageCount = doc.internal.getNumberOfPages();
   for(let i=1;i<=pageCount;i++){
     doc.setPage(i);
     doc.setFontSize(8);
     doc.setTextColor(150,150,150);
-    doc.text('Dicetak otomatis oleh Aplikasi Rekap Keuangan SKABIC — ' + new Date().toLocaleString('id-ID'), 14, 289);
+    doc.text('Dicetak otomatis oleh Aplikasi Rekap Keuangan SKABIC — ' + new Date().toLocaleString('id-ID'), 14, pageHeight - 8);
   }
 }
-function entryNominal(e){
-  const percent = e.skabicPercent!=null ? e.skabicPercent : state.percent;
-  return e.skabicNominal!=null ? e.skabicNominal : Math.round(e.untung*percent/100);
-}
-function entryPercent(e){ return e.skabicPercent!=null ? e.skabicPercent : state.percent; }
-function entryKasNominal(e){
-  const percent = e.kasPercent!=null ? e.kasPercent : state.percentKas;
-  return e.kasNominal!=null ? e.kasNominal : Math.round(e.untung*percent/100);
-}
-function entryKasPercent(e){ return e.kasPercent!=null ? e.kasPercent : state.percentKas; }
-function entryProduksiNominal(e){
-  const percent = e.produksiPercent!=null ? e.produksiPercent : state.percentProduksi;
-  return e.produksiNominal!=null ? e.produksiNominal : Math.round(e.untung*percent/100);
-}
-function entryProduksiPercent(e){ return e.produksiPercent!=null ? e.produksiPercent : state.percentProduksi; }
 
 function generateHarianPDF(tanggal, jurusanKey, entries){
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
+  const doc = new jsPDF({ orientation:'landscape' });
   pdfHeader(doc, 'Rekap Keuangan Harian', `${formatTanggalPanjang(tanggal)} — ${jurusanLabelFor(jurusanKey)}`);
 
-  const rows = entries.map(e => [
-    jMap[e.jurusan].label,
-    formatRp(e.kotor),
-    formatRp(e.untung),
-    `${entryPercent(e)}%\n${formatRp(entryNominal(e))}`,
-    `${entryKasPercent(e)}%\n${formatRp(entryKasNominal(e))}`,
-    `${entryProduksiPercent(e)}%\n${formatRp(entryProduksiNominal(e))}`
-  ]);
+  const rows = entries.map(e => {
+    const row = [jMap[e.jurusan].label, formatRp(e.kotor), formatRp(e.untung)];
+    KATEGORI_POTONGAN.forEach(k=>{
+      row.push(`${entryFieldPercent(e,k.key)}%  ${formatRp(entryFieldNominal(e,k.key))}`);
+    });
+    return row;
+  });
   const totalKotor = entries.reduce((s,e)=>s+e.kotor,0);
   const totalUntung = entries.reduce((s,e)=>s+e.untung,0);
-  const totalSkabic = entries.reduce((s,e)=>s+entryNominal(e),0);
-  const totalKas = entries.reduce((s,e)=>s+entryKasNominal(e),0);
-  const totalProduksi = entries.reduce((s,e)=>s+entryProduksiNominal(e),0);
   if(entries.length){
-    rows.push(['TOTAL', formatRp(totalKotor), formatRp(totalUntung), formatRp(totalSkabic), formatRp(totalKas), formatRp(totalProduksi)]);
+    const totalRow = ['TOTAL', formatRp(totalKotor), formatRp(totalUntung)];
+    KATEGORI_POTONGAN.forEach(k=>{
+      const total = entries.reduce((s,e)=>s+entryFieldNominal(e,k.key),0);
+      totalRow.push(formatRp(total));
+    });
+    rows.push(totalRow);
   }
+
+  const head = [['Jurusan','Omzet','Laba Bersih', ...KATEGORI_POTONGAN.map(k=>k.short)]];
 
   doc.autoTable({
     startY: 46,
-    head: [['Jurusan','Omzet','Laba Bersih','SKABIC','Kas Jurusan','Pelaku Produksi']],
-    body: rows.length ? rows : [['Tidak ada data','-','-','-','-','-']],
+    head,
+    body: rows.length ? rows : [['Tidak ada data', ...Array(2+KATEGORI_POTONGAN.length).fill('-')]],
     theme: 'grid',
-    headStyles:{ fillColor:[11,42,69], textColor:255, fontSize:8 },
-    bodyStyles:{ fontSize:7.8, valign:'middle' },
+    headStyles:{ fillColor:[11,42,69], textColor:255, fontSize:8.5 },
+    bodyStyles:{ fontSize:8 },
     didParseCell: (data)=>{
       if(entries.length && data.row.index === rows.length-1 && data.section==='body'){
         data.cell.styles.fontStyle = 'bold';
@@ -908,42 +1058,48 @@ function generateHarianPDF(tanggal, jurusanKey, entries){
   });
   doc.setFontSize(8);
   doc.setTextColor(110,110,110);
-  doc.text('Catatan: Potongan SKABIC, Kas Jurusan, dan Pelaku Produksi dihitung dari Laba Bersih (bukan Omzet).', 14, doc.lastAutoTable.finalY + 8);
+  doc.text('Catatan: Pengembangan SKABIC Jurusan, Pemeliharaan Alat Jurusan, Kas Jurusan, Kas SKABIC, dan Pelaku Produksi dihitung dari Laba Bersih (bukan Omzet).', 14, doc.lastAutoTable.finalY + 8);
   pdfFooter(doc);
   doc.save(`SKABIC-Harian-${tanggal}-${jurusanKey}.pdf`);
 }
 
 function generateBulananPDF(bulanStr, jurusanKey, entries){
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
+  const doc = new jsPDF({ orientation:'landscape' });
   pdfHeader(doc, 'Rekap Keuangan Bulanan', `${formatBulanTahun(bulanStr)} — ${jurusanLabelFor(jurusanKey)}`);
 
   const jurusanList = jurusanKey==='semua' ? JURUSAN : [jMap[jurusanKey]];
   const aggJ = {};
-  jurusanList.forEach(j => aggJ[j.key] = { jumlah:0, kotor:0, untung:0, skabic:0, kas:0, produksi:0 });
+  jurusanList.forEach(j => {
+    aggJ[j.key] = { jumlah:0, kotor:0, untung:0 };
+    KATEGORI_POTONGAN.forEach(k=>{ aggJ[j.key][k.key] = 0; });
+  });
   entries.forEach(e=>{
     if(!aggJ[e.jurusan]) return;
     aggJ[e.jurusan].jumlah++; aggJ[e.jurusan].kotor+=e.kotor; aggJ[e.jurusan].untung+=e.untung;
-    aggJ[e.jurusan].skabic+=entryNominal(e); aggJ[e.jurusan].kas+=entryKasNominal(e); aggJ[e.jurusan].produksi+=entryProduksiNominal(e);
+    KATEGORI_POTONGAN.forEach(k=>{ aggJ[e.jurusan][k.key] += entryFieldNominal(e,k.key); });
   });
   const grandKotor = entries.reduce((s,e)=>s+e.kotor,0);
   const grandUntung = entries.reduce((s,e)=>s+e.untung,0);
-  const grandSkabic = entries.reduce((s,e)=>s+entryNominal(e),0);
-  const grandKas = entries.reduce((s,e)=>s+entryKasNominal(e),0);
-  const grandProduksi = entries.reduce((s,e)=>s+entryProduksiNominal(e),0);
-  const rowsA = jurusanList.map(j => [
-    j.label, String(aggJ[j.key].jumlah), formatRp(aggJ[j.key].kotor), formatRp(aggJ[j.key].untung),
-    formatRp(aggJ[j.key].skabic), formatRp(aggJ[j.key].kas), formatRp(aggJ[j.key].produksi)
-  ]);
-  rowsA.push(['TOTAL', String(entries.length), formatRp(grandKotor), formatRp(grandUntung), formatRp(grandSkabic), formatRp(grandKas), formatRp(grandProduksi)]);
+  const grandByKat = {};
+  KATEGORI_POTONGAN.forEach(k=>{ grandByKat[k.key] = entries.reduce((s,e)=>s+entryFieldNominal(e,k.key),0); });
+
+  const rowsA = jurusanList.map(j => {
+    const row = [j.label, String(aggJ[j.key].jumlah), formatRp(aggJ[j.key].kotor), formatRp(aggJ[j.key].untung)];
+    KATEGORI_POTONGAN.forEach(k=> row.push(formatRp(aggJ[j.key][k.key])));
+    return row;
+  });
+  const totalRowA = ['TOTAL', String(entries.length), formatRp(grandKotor), formatRp(grandUntung)];
+  KATEGORI_POTONGAN.forEach(k=> totalRowA.push(formatRp(grandByKat[k.key])));
+  rowsA.push(totalRowA);
 
   doc.autoTable({
     startY: 46,
-    head: [['Jurusan','Trx','Omzet','Laba Bersih','SKABIC','Kas Jurusan','Pelaku Produksi']],
+    head: [['Jurusan','Trx','Omzet','Laba Bersih', ...KATEGORI_POTONGAN.map(k=>k.short)]],
     body: rowsA,
     theme: 'grid',
-    headStyles:{ fillColor:[11,42,69], textColor:255, fontSize:7.5 },
-    bodyStyles:{ fontSize:7.5 },
+    headStyles:{ fillColor:[11,42,69], textColor:255, fontSize:8 },
+    bodyStyles:{ fontSize:7.8 },
     didParseCell: (data)=>{
       if(data.row.index === rowsA.length-1 && data.section==='body'){
         data.cell.styles.fontStyle = 'bold';
@@ -958,25 +1114,31 @@ function generateBulananPDF(bulanStr, jurusanKey, entries){
 
   const dateMap = {};
   entries.forEach(e=>{
-    if(!dateMap[e.tanggal]) dateMap[e.tanggal] = { jumlah:0, kotor:0, untung:0, skabic:0, kas:0, produksi:0 };
+    if(!dateMap[e.tanggal]){
+      dateMap[e.tanggal] = { jumlah:0, kotor:0, untung:0 };
+      KATEGORI_POTONGAN.forEach(k=>{ dateMap[e.tanggal][k.key]=0; });
+    }
     dateMap[e.tanggal].jumlah++; dateMap[e.tanggal].kotor+=e.kotor; dateMap[e.tanggal].untung+=e.untung;
-    dateMap[e.tanggal].skabic+=entryNominal(e); dateMap[e.tanggal].kas+=entryKasNominal(e); dateMap[e.tanggal].produksi+=entryProduksiNominal(e);
+    KATEGORI_POTONGAN.forEach(k=>{ dateMap[e.tanggal][k.key] += entryFieldNominal(e,k.key); });
   });
   const dates = Object.keys(dateMap).sort();
-  const rowsB = dates.map(d => [
-    formatTanggalPendek(d), String(dateMap[d].jumlah), formatRp(dateMap[d].kotor), formatRp(dateMap[d].untung),
-    formatRp(dateMap[d].skabic), formatRp(dateMap[d].kas), formatRp(dateMap[d].produksi)
-  ]);
+  const rowsB = dates.map(d => {
+    const row = [formatTanggalPendek(d), String(dateMap[d].jumlah), formatRp(dateMap[d].kotor), formatRp(dateMap[d].untung)];
+    KATEGORI_POTONGAN.forEach(k=> row.push(formatRp(dateMap[d][k.key])));
+    return row;
+  });
   if(dates.length){
-    rowsB.push(['TOTAL BULAN INI', String(entries.length), formatRp(grandKotor), formatRp(grandUntung), formatRp(grandSkabic), formatRp(grandKas), formatRp(grandProduksi)]);
+    const totalRowB = ['TOTAL BULAN INI', String(entries.length), formatRp(grandKotor), formatRp(grandUntung)];
+    KATEGORI_POTONGAN.forEach(k=> totalRowB.push(formatRp(grandByKat[k.key])));
+    rowsB.push(totalRowB);
   }
 
   doc.autoTable({
     startY: y2 + 4,
-    head: [['Tanggal','Trx','Omzet','Laba Bersih','SKABIC','Kas Jurusan','Pelaku Produksi']],
-    body: rowsB.length ? rowsB : [['Tidak ada data','-','-','-','-','-','-']],
+    head: [['Tanggal','Trx','Omzet','Laba Bersih', ...KATEGORI_POTONGAN.map(k=>k.short)]],
+    body: rowsB.length ? rowsB : [['Tidak ada data', ...Array(3+KATEGORI_POTONGAN.length).fill('-')]],
     theme: 'striped',
-    headStyles:{ fillColor:[14,75,71], textColor:255, fontSize:7.3 },
+    headStyles:{ fillColor:[14,75,71], textColor:255, fontSize:7.5 },
     bodyStyles:{ fontSize:7.3 },
     didParseCell: (data)=>{
       if(dates.length && data.row.index === rowsB.length-1 && data.section==='body'){
@@ -987,7 +1149,7 @@ function generateBulananPDF(bulanStr, jurusanKey, entries){
   });
   doc.setFontSize(8);
   doc.setTextColor(110,110,110);
-  doc.text('Catatan: Potongan SKABIC, Kas Jurusan, dan Pelaku Produksi dihitung dari Laba Bersih (bukan Omzet).', 14, doc.lastAutoTable.finalY + 8);
+  doc.text('Catatan: Pengembangan SKABIC Jurusan, Pemeliharaan Alat Jurusan, Kas Jurusan, Kas SKABIC, dan Pelaku Produksi dihitung dari Laba Bersih (bukan Omzet).', 14, doc.lastAutoTable.finalY + 8);
 
   pdfFooter(doc);
   doc.save(`SKABIC-Bulanan-${bulanStr}-${jurusanKey}.pdf`);
@@ -1035,9 +1197,35 @@ function render(){
 
 /* ============ RENDER: INPUT ============ */
 function renderInputView(mv){
+  if(!state.loggedInStaff){
+    mv.innerHTML = `
+      <div class="card password-screen">
+        <div class="lock-badge">${ICONS.idcard}</div>
+        <h3>Login Petugas Input</h3>
+        <p>Masukkan Nomor NIP untuk mulai menginput data penjualan. Data NIP hanya bisa didaftarkan atau diubah oleh admin.</p>
+        <div class="field" style="text-align:left;">
+          <label class="field-label">Nomor NIP</label>
+          <input type="text" inputmode="numeric" id="nip-input" placeholder="Masukkan Nomor NIP" value="${state.nipInput}">
+        </div>
+        <button class="btn-primary" id="nip-submit-btn">Masuk</button>
+      </div>
+    `;
+    const nipEl = document.getElementById('nip-input');
+    nipEl.addEventListener('input', e=> updateNipInput(e.target.value));
+    nipEl.addEventListener('keydown', e=>{ if(e.key==='Enter') submitNipLogin(); });
+    document.getElementById('nip-submit-btn').addEventListener('click', submitNipLogin);
+    return;
+  }
+
   mv.innerHTML = `
     <h2 class="section-title">Input Data Penjualan</h2>
     <p class="section-sub">Catat Omzet dan Laba Bersih harian dari tiap jurusan.</p>
+
+    <div class="staff-banner">
+      <div>Login sebagai <b>${state.loggedInStaff.nama}</b><br><span style="opacity:.7;">NIP ${state.loggedInStaff.nip}</span></div>
+      <button class="btn-small" id="staff-logout-btn">Keluar</button>
+    </div>
+
     <div class="card">
       <label class="field-label">Pilih Jurusan</label>
       <div class="jurusan-grid ${state.formErrors.jurusan?'has-error':''}" id="jurusan-grid">
@@ -1070,24 +1258,19 @@ function renderInputView(mv){
         <div class="rp-preview" id="untung-preview">${state.form.untung?formatRp(state.form.untung):''}</div>
         ${state.formErrors.untung ? `<p class="field-error" id="error-untung">${state.formErrors.untung}</p>` : ''}
 
-        <div class="potongan-box">
-          <div class="p-lbl">Potongan ke SKABIC (<span id="skabic-breakdown-pct">${state.percent}%</span>)</div>
-          <div class="p-val" id="skabic-breakdown-val">${formatRp(Math.round((Number(state.form.untung)||0)*state.percent/100))}</div>
-        </div>
-        <div class="potongan-box">
-          <div class="p-lbl">Kas Jurusan (<span id="kas-breakdown-pct">${state.percentKas}%</span>)</div>
-          <div class="p-val" id="kas-breakdown-val">${formatRp(Math.round((Number(state.form.untung)||0)*state.percentKas/100))}</div>
-        </div>
-        <div class="potongan-box">
-          <div class="p-lbl">Pelaku Produksi (<span id="produksi-breakdown-pct">${state.percentProduksi}%</span>)</div>
-          <div class="p-val" id="produksi-breakdown-val">${formatRp(Math.round((Number(state.form.untung)||0)*state.percentProduksi/100))}</div>
-        </div>
+        ${KATEGORI_POTONGAN.map(k=>`
+          <div class="potongan-box">
+            <div class="p-lbl">${k.label} (<span id="bd-pct-${k.key}">${state.percentages[k.key]}%</span>)</div>
+            <div class="p-val" id="bd-val-${k.key}">${formatRp(Math.round((Number(state.form.untung)||0)*state.percentages[k.key]/100))}</div>
+          </div>
+        `).join('')}
       </div>
 
       <button class="btn-primary" id="submit-btn">Simpan Data</button>
-      <p class="hint">Semua isian wajib dilengkapi. Data tidak akan tersimpan sebelum jurusan, tanggal, Omzet, dan Laba Bersih terisi dengan benar. Potongan ke SKABIC, Kas Jurusan, dan Pelaku Produksi dihitung otomatis dari Laba Bersih sesuai persentase yang diatur admin di menu Setting.</p>
+      <p class="hint">Semua isian wajib dilengkapi. Data tidak akan tersimpan sebelum jurusan, tanggal, Omzet, dan Laba Bersih terisi dengan benar. Kelima pembagian di atas dihitung otomatis dari Laba Bersih sesuai persentase yang diatur admin di menu Setting.</p>
     </div>
   `;
+  document.getElementById('staff-logout-btn').addEventListener('click', logoutStaff);
   mv.querySelectorAll('[data-j]').forEach(el=>{
     el.addEventListener('click', ()=> selectJurusan(el.getAttribute('data-j')));
   });
@@ -1097,7 +1280,22 @@ function renderInputView(mv){
   document.getElementById('submit-btn').addEventListener('click', submitEntry);
 }
 
-/* ============ RENDER: RIWAYAT (publik) ============ */
+/* ============ Helper: tampilkan rincian breakdown per entry (dipakai Riwayat & Admin) ============ */
+function renderEntryBreakdownHtml(e){
+  const parts = KATEGORI_POTONGAN.map(k=> `${k.short} ${entryFieldPercent(e,k.key)}% <b>${formatRp(entryFieldNominal(e,k.key))}</b>`);
+  const petugas = e.namaPetugas
+    ? `Diinput oleh: <b>${e.namaPetugas}</b> (NIP ${e.nip})`
+    : `Diinput oleh: <i>tidak tercatat</i>`;
+  return `
+    <div class="entry-figures">
+      Omzet <b>${formatRp(e.kotor)}</b> · Laba Bersih <b>${formatRp(e.untung)}</b><br>
+      ${parts.join(' · ')}<br>
+      <span style="opacity:.72;">${petugas}</span>
+    </div>
+  `;
+}
+
+/* ============ RENDER: RIWAYAT (publik, tanpa login) ============ */
 function renderRiwayatView(mv){
   let entries = [...state.entries];
   if(state.filterJurusan !== 'semua'){ entries = entries.filter(e=>e.jurusan===state.filterJurusan); }
@@ -1106,7 +1304,7 @@ function renderRiwayatView(mv){
 
   mv.innerHTML = `
     <h2 class="section-title">Riwayat &amp; Unduh Laporan</h2>
-    <p class="section-sub">Lihat riwayat transaksi harian, atau unduh laporan PDF harian maupun bulanan.</p>
+    <p class="section-sub">Riwayat transaksi harian dapat dilihat oleh siapa saja tanpa perlu login, agar mudah dipantau bersama.</p>
 
     <div class="card">
       <label class="field-label">Unduh Laporan</label>
@@ -1181,7 +1379,6 @@ function renderRiwayatView(mv){
   list.innerHTML = dates.map(dstr=>{
     const dayEntries = entries.filter(e=>e.tanggal===dstr);
     const totalKotor = dayEntries.reduce((s,e)=>s+e.kotor,0);
-    const totalNominal = dayEntries.reduce((s,e)=>s+entryNominal(e),0);
     const totalUntung = dayEntries.reduce((s,e)=>s+e.untung,0);
     return `
       <div class="card date-group">
@@ -1194,13 +1391,13 @@ function renderRiwayatView(mv){
             <div class="j-badge" style="background:${jMap[e.jurusan].color};width:28px;height:28px;">${jMap[e.jurusan].icon.replace('width="17" height="17"','width="14" height="14"')}</div>
             <div class="entry-info">
               <div class="entry-jname">${jMap[e.jurusan].label}</div>
-              <div class="entry-figures">Omzet <b>${formatRp(e.kotor)}</b> · Laba Bersih <b>${formatRp(e.untung)}</b><br>SKABIC ${entryPercent(e)}% <b>${formatRp(entryNominal(e))}</b> · Kas Jurusan ${entryKasPercent(e)}% <b>${formatRp(entryKasNominal(e))}</b><br>Pelaku Produksi ${entryProduksiPercent(e)}% <b>${formatRp(entryProduksiNominal(e))}</b></div>
+              ${renderEntryBreakdownHtml(e)}
             </div>
           </div>
         `).join('')}
         <div class="day-total">
           <div class="t-lbl">Total Hari Ini</div>
-          <div class="t-val">Omzet ${formatRp(totalKotor)} · Potongan ${formatRp(totalNominal)} · Laba ${formatRp(totalUntung)}</div>
+          <div class="t-val">Omzet ${formatRp(totalKotor)} · Laba ${formatRp(totalUntung)}</div>
         </div>
       </div>
     `;
@@ -1216,25 +1413,27 @@ function renderDlResult(resultEl){
   }
   const jurusanList = state.dlJurusan==='semua' ? JURUSAN : [jMap[state.dlJurusan]];
   const agg = {};
-  jurusanList.forEach(j => agg[j.key] = { jumlah:0, kotor:0, untung:0, skabic:0, kas:0, produksi:0 });
+  jurusanList.forEach(j => {
+    agg[j.key] = { jumlah:0, kotor:0, untung:0 };
+    KATEGORI_POTONGAN.forEach(k=>{ agg[j.key][k.key]=0; });
+  });
   entries.forEach(e=>{
     if(!agg[e.jurusan]) return;
     agg[e.jurusan].jumlah++; agg[e.jurusan].kotor+=e.kotor; agg[e.jurusan].untung+=e.untung;
-    agg[e.jurusan].skabic+=entryNominal(e); agg[e.jurusan].kas+=entryKasNominal(e); agg[e.jurusan].produksi+=entryProduksiNominal(e);
+    KATEGORI_POTONGAN.forEach(k=>{ agg[e.jurusan][k.key] += entryFieldNominal(e,k.key); });
   });
   const grandKotor = entries.reduce((s,e)=>s+e.kotor,0);
   const grandUntung = entries.reduce((s,e)=>s+e.untung,0);
-  const grandSkabic = entries.reduce((s,e)=>s+entryNominal(e),0);
-  const grandKas = entries.reduce((s,e)=>s+entryKasNominal(e),0);
-  const grandProduksi = entries.reduce((s,e)=>s+entryProduksiNominal(e),0);
+  const grandByKat = {};
+  KATEGORI_POTONGAN.forEach(k=>{ grandByKat[k.key] = entries.reduce((s,e)=>s+entryFieldNominal(e,k.key),0); });
   const label = type==='harian' ? formatTanggalPendek(state.dlTanggal) : formatBulanTahun(state.dlBulan);
 
   resultEl.innerHTML = `
     <div class="card">
       <div class="stamp">${stampSVG(label, type==='harian')}</div>
       <div style="overflow-x:auto;">
-      <table class="rekap-table" style="min-width:560px;">
-        <thead><tr><th>Jurusan</th><th>Trx</th><th>Omzet</th><th>Laba Bersih</th><th>SKABIC</th><th>Kas Jurusan</th><th>Pelaku Produksi</th></tr></thead>
+      <table class="rekap-table" style="min-width:680px;">
+        <thead><tr><th>Jurusan</th><th>Trx</th><th>Omzet</th><th>Laba Bersih</th>${KATEGORI_POTONGAN.map(k=>`<th>${k.short}</th>`).join('')}</tr></thead>
         <tbody>
           ${jurusanList.map(j=>`
             <tr>
@@ -1242,9 +1441,7 @@ function renderDlResult(resultEl){
               <td>${agg[j.key].jumlah}</td>
               <td>${formatRp(agg[j.key].kotor)}</td>
               <td>${formatRp(agg[j.key].untung)}</td>
-              <td>${formatRp(agg[j.key].skabic)}</td>
-              <td>${formatRp(agg[j.key].kas)}</td>
-              <td>${formatRp(agg[j.key].produksi)}</td>
+              ${KATEGORI_POTONGAN.map(k=>`<td>${formatRp(agg[j.key][k.key])}</td>`).join('')}
             </tr>
           `).join('')}
           <tr class="total-row">
@@ -1252,16 +1449,14 @@ function renderDlResult(resultEl){
             <td>${entries.length}</td>
             <td>${formatRp(grandKotor)}</td>
             <td>${formatRp(grandUntung)}</td>
-            <td>${formatRp(grandSkabic)}</td>
-            <td>${formatRp(grandKas)}</td>
-            <td>${formatRp(grandProduksi)}</td>
+            ${KATEGORI_POTONGAN.map(k=>`<td>${formatRp(grandByKat[k.key])}</td>`).join('')}
           </tr>
         </tbody>
       </table>
       </div>
       <div style="height:14px"></div>
       <button class="btn-secondary" id="dl-download-btn">${ICONS.download} Unduh PDF ${type==='harian'?'Harian':'Bulanan'}</button>
-      <p class="hint">File PDF memuat rincian tiap transaksi beserta persentase dan nominal potongan SKABIC, Kas Jurusan, dan Pelaku Produksi (dihitung dari Laba Bersih)${type==='bulanan' ? ', lengkap dengan rekap harian yang dijumlahkan selama satu bulan.' : '.'}</p>
+      <p class="hint">File PDF memuat rincian tiap transaksi beserta persentase dan nominal kelima pembagian Laba Bersih${type==='bulanan' ? ', lengkap dengan rekap harian yang dijumlahkan selama satu bulan.' : '.'}</p>
     </div>
   `;
   document.getElementById('dl-download-btn').addEventListener('click', ()=>{
@@ -1291,7 +1486,7 @@ function renderSettingView(mv){
       <div class="card password-screen">
         <div class="lock-badge">${ICONS.lock}</div>
         <h3>Area Khusus Admin</h3>
-        <p>Masukkan password admin untuk mengatur logo, persentase potongan SKABIC, password, serta mengedit atau menghapus data riwayat.</p>
+        <p>Masukkan password admin untuk mengatur logo, persentase pembagian Laba Bersih, data login (NIP), password, serta mengedit atau menghapus data riwayat.</p>
         <div class="field" style="text-align:left;">
           <label class="field-label">Password Admin</label>
           <input type="password" id="password-input" placeholder="Masukkan password" value="${state.passwordInput}">
@@ -1306,9 +1501,11 @@ function renderSettingView(mv){
     return;
   }
 
+  const percentSum = KATEGORI_POTONGAN.reduce((s,k)=> s + (Number(state.settingsPercentInputs[k.key])||0), 0);
+
   mv.innerHTML = `
     <h2 class="section-title">Pengaturan Admin</h2>
-    <p class="section-sub">Kelola koneksi database, logo, persentase potongan SKABIC, password, dan data riwayat transaksi.</p>
+    <p class="section-sub">Kelola koneksi database, logo, persentase pembagian Laba Bersih, data login petugas, password, dan data riwayat transaksi.</p>
 
     <div class="card settings-section">
       <h4>${ICONS.database} Status Database</h4>
@@ -1316,7 +1513,7 @@ function renderSettingView(mv){
         <span class="dot2"></span>
         ${state.supabaseConnected ? 'Terhubung ke Supabase — data tersimpan di cloud dan bisa diakses dari perangkat mana pun.' : 'Belum terhubung ke Supabase — data masih tersimpan secara bawaan di aplikasi ini.'}
       </div>
-      <p class="hint">URL dan Anon Key Supabase diatur langsung di dalam kode HTML aplikasi (bukan dari sini), agar tidak bisa diubah sembarangan lewat tampilan. Lihat panduan terpisah untuk langkah memasukkan URL &amp; Key ke kode serta langkah menyiapkan project Supabase-nya.</p>
+      <p class="hint">URL dan Anon Key Supabase diatur langsung di dalam kode HTML aplikasi (bukan dari sini).</p>
     </div>
 
     <div class="card settings-section">
@@ -1334,20 +1531,35 @@ function renderSettingView(mv){
 
     <div class="card settings-section">
       <h4>Persentase Pembagian Laba Bersih</h4>
-      <div class="field">
-        <label class="field-label">Potongan ke SKABIC (%)</label>
-        <input type="number" min="0" max="100" id="percent-skabic-input" value="${state.settingsPercentInput}">
-      </div>
-      <div class="field">
-        <label class="field-label">Kas Jurusan (%)</label>
-        <input type="number" min="0" max="100" id="percent-kas-input" value="${state.settingsPercentKasInput}">
-      </div>
-      <div class="field">
-        <label class="field-label">Pelaku Produksi (%)</label>
-        <input type="number" min="0" max="100" id="percent-produksi-input" value="${state.settingsPercentProduksiInput}">
+      ${KATEGORI_POTONGAN.map(k=>`
+        <div class="field">
+          <label class="field-label">${k.label} (%)</label>
+          <input type="number" min="0" max="100" class="percent-input" data-key="${k.key}" value="${state.settingsPercentInputs[k.key]}">
+        </div>
+      `).join('')}
+      <div class="percent-total-note ${percentSum===100?'ok':'warn'}">
+        Total saat ini: ${percentSum}% ${percentSum===100 ? '(sudah pas 100%)' : '— idealnya berjumlah 100%'}
       </div>
       <button class="btn-secondary" id="percent-save-btn">Simpan Semua Persentase</button>
-      <p class="hint">Saat ini setiap Laba Bersih yang diinput otomatis dibagi: SKABIC <b>${state.percent}%</b>, Kas Jurusan <b>${state.percentKas}%</b>, Pelaku Produksi <b>${state.percentProduksi}%</b>. Total ketiganya idealnya 100%. Perubahan langsung berlaku untuk input data berikutnya (data lama tidak berubah).</p>
+      <p class="hint">Perubahan langsung berlaku untuk input data berikutnya. Data transaksi yang sudah tersimpan sebelumnya tidak berubah.</p>
+    </div>
+
+    <div class="card settings-section">
+      <h4>${ICONS.users} Kelola Data Login (NIP)</h4>
+      <p class="hint" style="margin-top:0;">Daftarkan Nomor NIP dan nama petugas yang boleh login di menu Input. Hanya NIP yang terdaftar di sini yang bisa dipakai untuk login.</p>
+      <div class="inline-row">
+        <div class="field">
+          <label class="field-label">Nomor NIP</label>
+          <input type="text" id="new-staff-nip" placeholder="Nomor NIP" value="${state.newStaffNip}">
+        </div>
+        <div class="field">
+          <label class="field-label">Nama Petugas</label>
+          <input type="text" id="new-staff-nama" placeholder="Nama lengkap" value="${state.newStaffNama}">
+        </div>
+      </div>
+      <button class="btn-secondary" id="add-staff-btn">Tambah Petugas</button>
+      <div class="divider"></div>
+      <div id="staff-list"></div>
     </div>
 
     <div class="card settings-section">
@@ -1376,10 +1588,15 @@ function renderSettingView(mv){
   const removeBtn = document.getElementById('logo-remove');
   if(removeBtn) removeBtn.addEventListener('click', ()=>{ if(confirm('Hapus logo SKABIC dari aplikasi?')) removeLogo(); });
 
-  document.getElementById('percent-skabic-input').addEventListener('input', e=> updatePercentInput('settingsPercentInput', e.target.value));
-  document.getElementById('percent-kas-input').addEventListener('input', e=> updatePercentInput('settingsPercentKasInput', e.target.value));
-  document.getElementById('percent-produksi-input').addEventListener('input', e=> updatePercentInput('settingsPercentProduksiInput', e.target.value));
+  mv.querySelectorAll('.percent-input').forEach(inp=>{
+    inp.addEventListener('input', e=> updatePercentInput(e.target.getAttribute('data-key'), e.target.value));
+  });
   document.getElementById('percent-save-btn').addEventListener('click', savePercentSetting);
+
+  document.getElementById('new-staff-nip').addEventListener('input', e=> updateNewStaffField('newStaffNip', e.target.value));
+  document.getElementById('new-staff-nama').addEventListener('input', e=> updateNewStaffField('newStaffNama', e.target.value));
+  document.getElementById('add-staff-btn').addEventListener('click', addStaffHandler);
+  renderStaffList(document.getElementById('staff-list'));
 
   document.getElementById('pass-new').addEventListener('input', e=> updateNewPass('settingsPassNew', e.target.value));
   document.getElementById('pass-new2').addEventListener('input', e=> updateNewPass('settingsPassNew2', e.target.value));
@@ -1388,6 +1605,65 @@ function renderSettingView(mv){
   document.getElementById('logout-btn').addEventListener('click', logoutAdmin);
 
   renderAdminEntryList(document.getElementById('admin-entry-list'));
+}
+
+function renderStaffList(container){
+  if(state.staffList.length === 0){
+    container.innerHTML = `<div class="empty-state">${ICONS.empty}<p>Belum ada data petugas terdaftar.</p></div>`;
+    return;
+  }
+  container.innerHTML = state.staffList.map(s=>{
+    if(state.adminStaffEditId === s.id){
+      const f = state.adminStaffEditForm;
+      return `
+        <div class="edit-form" data-staff-edit-id="${s.id}">
+          <div class="field">
+            <label class="field-label">Nomor NIP</label>
+            <input type="text" class="staff-edit-nip" value="${f.nip}">
+          </div>
+          <div class="field">
+            <label class="field-label">Nama Petugas</label>
+            <input type="text" class="staff-edit-nama" value="${f.nama}">
+          </div>
+          <div class="edit-actions">
+            <button class="btn-primary" data-staff-save="${s.id}" style="flex:1;">Simpan</button>
+            <button class="btn-secondary" data-staff-cancel="${s.id}" style="flex:1;">Batal</button>
+          </div>
+        </div>
+      `;
+    }
+    return `
+      <div class="entry-row">
+        <div class="entry-info">
+          <div class="entry-jname">${s.nama}</div>
+          <div class="entry-figures">NIP: <b>${s.nip}</b></div>
+        </div>
+        <div class="entry-actions">
+          <button class="icon-btn edit" data-staff-editbtn="${s.id}">${ICONS.edit}</button>
+          <button class="icon-btn del" data-staff-delbtn="${s.id}">${ICONS.trash}</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  container.querySelectorAll('[data-staff-editbtn]').forEach(btn=>{
+    btn.addEventListener('click', ()=> startEditStaff(btn.getAttribute('data-staff-editbtn')));
+  });
+  container.querySelectorAll('[data-staff-delbtn]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      if(confirm('Hapus data petugas ini? Petugas tidak akan bisa login lagi dengan NIP ini.')) deleteStaffAdmin(btn.getAttribute('data-staff-delbtn'));
+    });
+  });
+  container.querySelectorAll('[data-staff-save]').forEach(btn=>{
+    btn.addEventListener('click', saveStaffEdit);
+  });
+  container.querySelectorAll('[data-staff-cancel]').forEach(btn=>{
+    btn.addEventListener('click', cancelEditStaff);
+  });
+  container.querySelectorAll('.edit-form[data-staff-edit-id]').forEach(form=>{
+    form.querySelector('.staff-edit-nip').addEventListener('input', e=> updateStaffEditForm('nip', e.target.value));
+    form.querySelector('.staff-edit-nama').addEventListener('input', e=> updateStaffEditForm('nama', e.target.value));
+  });
 }
 
 function renderAdminEntryList(container){
@@ -1439,7 +1715,7 @@ function renderAdminEntryList(container){
               <div class="j-badge" style="background:${jMap[e.jurusan].color};width:28px;height:28px;">${jMap[e.jurusan].icon.replace('width="17" height="17"','width="14" height="14"')}</div>
               <div class="entry-info">
                 <div class="entry-jname">${jMap[e.jurusan].label}</div>
-                <div class="entry-figures">Omzet <b>${formatRp(e.kotor)}</b> · Laba Bersih <b>${formatRp(e.untung)}</b><br>SKABIC ${entryPercent(e)}% <b>${formatRp(entryNominal(e))}</b> · Kas Jurusan ${entryKasPercent(e)}% <b>${formatRp(entryKasNominal(e))}</b><br>Pelaku Produksi ${entryProduksiPercent(e)}% <b>${formatRp(entryProduksiNominal(e))}</b></div>
+                ${renderEntryBreakdownHtml(e)}
               </div>
               <div class="entry-actions">
                 <button class="icon-btn edit" data-editbtn="${e.id}">${ICONS.edit}</button>
@@ -1466,7 +1742,7 @@ function renderAdminEntryList(container){
   container.querySelectorAll('[data-cancel]').forEach(btn=>{
     btn.addEventListener('click', cancelEditEntry);
   });
-  container.querySelectorAll('.edit-form').forEach(form=>{
+  container.querySelectorAll('.edit-form[data-edit-id]').forEach(form=>{
     form.querySelector('.edit-jurusan').addEventListener('change', e=> updateEditForm('jurusan', e.target.value));
     form.querySelector('.edit-tanggal').addEventListener('change', e=> updateEditForm('tanggal', e.target.value));
     form.querySelector('.edit-kotor').addEventListener('input', e=> updateEditForm('kotor', e.target.value));
