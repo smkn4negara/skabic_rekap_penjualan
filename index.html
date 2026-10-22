@@ -422,6 +422,7 @@ function formatRp(n){ n = Number(n)||0; return 'Rp ' + n.toLocaleString('id-ID')
 /* ---- Input nominal uang: otomatis memberi tanda titik ribuan (1.500.000) ---- */
 function onlyDigits(s){ return String(s==null?'':s).replace(/\D/g,'').replace(/^0+(?=\d)/,'').slice(0,15); }
 function formatThousands(digits){ return onlyDigits(digits).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+function formatRupiahField(digits){ const d = onlyDigits(digits); return d ? 'Rp ' + formatThousands(d) : ''; }
 function bindMoneyInput(el, onValue){
   if(!el) return;
   el.addEventListener('input', ()=>{
@@ -429,7 +430,7 @@ function bindMoneyInput(el, onValue){
     const caret = el.selectionStart != null ? el.selectionStart : raw.length;
     const digitsBeforeCaret = raw.slice(0, caret).replace(/\D/g,'').length;
     const digits = onlyDigits(raw);
-    const formatted = formatThousands(digits);
+    const formatted = formatRupiahField(digits);
     el.value = formatted;
     let pos = 0, count = 0;
     while(pos < formatted.length && count < digitsBeforeCaret){
@@ -806,11 +807,6 @@ function clearFieldErrorUI(field){
   if(errEl) errEl.remove();
 }
 function renderRpPreview(){
-  const kEl = document.getElementById('kotor-preview');
-  const uEl = document.getElementById('untung-preview');
-  if(kEl) kEl.textContent = state.form.kotor ? formatRp(state.form.kotor) : '';
-  if(uEl) uEl.textContent = state.form.untung ? formatRp(state.form.untung) : '';
-
   const untung = Number(state.form.untung)||0;
   const breakdown = computeBreakdown(untung);
   KATEGORI_POTONGAN.forEach(k=>{
@@ -1267,16 +1263,14 @@ function renderInputView(mv){
       </div>
 
       <div class="field">
-        <label class="field-label">Omzet (Rp)</label>
-        <input type="text" inputmode="numeric" autocomplete="off" id="kotor-input" class="${state.formErrors.kotor?'has-error':''}" placeholder="cth. 500.000" value="${formatThousands(state.form.kotor)}">
-        <div class="rp-preview" id="kotor-preview">${state.form.kotor?formatRp(state.form.kotor):''}</div>
+        <label class="field-label">Omzet</label>
+        <input type="text" inputmode="numeric" autocomplete="off" id="kotor-input" class="${state.formErrors.kotor?'has-error':''}" placeholder="cth. Rp 500.000" value="${formatRupiahField(state.form.kotor)}">
         ${state.formErrors.kotor ? `<p class="field-error" id="error-kotor">${state.formErrors.kotor}</p>` : ''}
       </div>
 
       <div class="field">
-        <label class="field-label">Laba Bersih (Rp)</label>
-        <input type="text" inputmode="numeric" autocomplete="off" id="untung-input" class="${state.formErrors.untung?'has-error':''}" placeholder="cth. 150.000" value="${formatThousands(state.form.untung)}">
-        <div class="rp-preview" id="untung-preview">${state.form.untung?formatRp(state.form.untung):''}</div>
+        <label class="field-label">Laba Bersih</label>
+        <input type="text" inputmode="numeric" autocomplete="off" id="untung-input" class="${state.formErrors.untung?'has-error':''}" placeholder="cth. Rp 150.000" value="${formatRupiahField(state.form.untung)}">
         ${state.formErrors.untung ? `<p class="field-error" id="error-untung">${state.formErrors.untung}</p>` : ''}
 
         ${KATEGORI_POTONGAN.map(k=>`
@@ -1717,12 +1711,12 @@ function renderAdminEntryList(container){
                   <input type="date" class="edit-tanggal" value="${f.tanggal}">
                 </div>
                 <div class="field">
-                  <label class="field-label">Omzet (Rp)</label>
-                  <input type="text" inputmode="numeric" autocomplete="off" class="edit-kotor" value="${formatThousands(f.kotor)}">
+                  <label class="field-label">Omzet</label>
+                  <input type="text" inputmode="numeric" autocomplete="off" class="edit-kotor" value="${formatRupiahField(f.kotor)}">
                 </div>
                 <div class="field">
-                  <label class="field-label">Laba Bersih (Rp)</label>
-                  <input type="text" inputmode="numeric" autocomplete="off" class="edit-untung" value="${formatThousands(f.untung)}">
+                  <label class="field-label">Laba Bersih</label>
+                  <input type="text" inputmode="numeric" autocomplete="off" class="edit-untung" value="${formatRupiahField(f.untung)}">
                 </div>
                 <div class="edit-actions">
                   <button class="btn-primary" data-save="${e.id}" style="flex:1;">Simpan</button>
