@@ -419,6 +419,27 @@ function todayStr(){
 }
 function currentMonthStr(){ return todayStr().slice(0,7); }
 function formatRp(n){ n = Number(n)||0; return 'Rp ' + n.toLocaleString('id-ID'); }
+/* ---- Input nominal uang: otomatis memberi tanda titik ribuan (1.500.000) ---- */
+function onlyDigits(s){ return String(s==null?'':s).replace(/\D/g,'').replace(/^0+(?=\d)/,'').slice(0,15); }
+function formatThousands(digits){ return onlyDigits(digits).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+function bindMoneyInput(el, onValue){
+  if(!el) return;
+  el.addEventListener('input', ()=>{
+    const raw = el.value;
+    const caret = el.selectionStart != null ? el.selectionStart : raw.length;
+    const digitsBeforeCaret = raw.slice(0, caret).replace(/\D/g,'').length;
+    const digits = onlyDigits(raw);
+    const formatted = formatThousands(digits);
+    el.value = formatted;
+    let pos = 0, count = 0;
+    while(pos < formatted.length && count < digitsBeforeCaret){
+      if(/\d/.test(formatted[pos])) count++;
+      pos++;
+    }
+    try{ el.setSelectionRange(pos, pos); }catch(e){}
+    onValue(digits);
+  });
+}
 function formatTanggalPanjang(dstr){
   const d = new Date(dstr+'T00:00:00');
   return d.toLocaleDateString('id-ID', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
@@ -754,7 +775,7 @@ function submitNipLogin(){
   if(!nip){ showToast('Masukkan Nomor NIP'); return; }
   const found = state.staffList.find(s=> s.nip === nip);
   if(!found){
-    showToast('NIP tidak terdaftar. Hubungi admin untuk didaftarkan.');
+    showToast('NIP tidak terdaftar. Hubungi admin untuk didaftarkan di menu Setting.');
     state.nipInput = '';
     render();
     return;
@@ -899,7 +920,7 @@ function startEditEntry(id){
   const e = state.entries.find(x=>x.id===id);
   if(!e) return;
   state.adminEditId = id;
-  state.adminEditForm = { jurusan:e.jurusan, tanggal:e.tanggal, kotor:String(e.kotor), untung:String(e.untung) };
+  state.adminEditForm = { jurusan:e.jurusan, tanggal:e.tanggal, kotor:String(Math.round(e.kotor)), untung:String(Math.round(e.untung)) };
   render();
 }
 function cancelEditEntry(){ state.adminEditId=null; state.adminEditForm=null; render(); }
@@ -1202,7 +1223,7 @@ function renderInputView(mv){
       <div class="card password-screen">
         <div class="lock-badge">${ICONS.idcard}</div>
         <h3>Login Petugas Input</h3>
-        <p>Masukkan Nomor NIP untuk mulai menginput data penjualan. Data NIP hanya bisa didaftarkan atau diubah oleh admin.</p>
+        <p>Masukkan Nomor NIP untuk mulai menginput data penjualan. Data NIP hanya bisa didaftarkan atau diubah oleh admin di menu Setting.</p>
         <div class="field" style="text-align:left;">
           <label class="field-label">Nomor NIP</label>
           <input type="text" inputmode="numeric" id="nip-input" placeholder="Masukkan Nomor NIP" value="${state.nipInput}">
@@ -1247,14 +1268,14 @@ function renderInputView(mv){
 
       <div class="field">
         <label class="field-label">Omzet (Rp)</label>
-        <input type="number" inputmode="numeric" min="0" id="kotor-input" class="${state.formErrors.kotor?'has-error':''}" placeholder="cth. 500000" value="${state.form.kotor}">
+        <input type="text" inputmode="numeric" autocomplete="off" id="kotor-input" class="${state.formErrors.kotor?'has-error':''}" placeholder="cth. 500.000" value="${formatThousands(state.form.kotor)}">
         <div class="rp-preview" id="kotor-preview">${state.form.kotor?formatRp(state.form.kotor):''}</div>
         ${state.formErrors.kotor ? `<p class="field-error" id="error-kotor">${state.formErrors.kotor}</p>` : ''}
       </div>
 
       <div class="field">
         <label class="field-label">Laba Bersih (Rp)</label>
-        <input type="number" inputmode="numeric" min="0" id="untung-input" class="${state.formErrors.untung?'has-error':''}" placeholder="cth. 150000" value="${state.form.untung}">
+        <input type="text" inputmode="numeric" autocomplete="off" id="untung-input" class="${state.formErrors.untung?'has-error':''}" placeholder="cth. 150.000" value="${formatThousands(state.form.untung)}">
         <div class="rp-preview" id="untung-preview">${state.form.untung?formatRp(state.form.untung):''}</div>
         ${state.formErrors.untung ? `<p class="field-error" id="error-untung">${state.formErrors.untung}</p>` : ''}
 
@@ -1275,8 +1296,8 @@ function renderInputView(mv){
     el.addEventListener('click', ()=> selectJurusan(el.getAttribute('data-j')));
   });
   document.getElementById('tanggal-input').addEventListener('change', e=> updateField('tanggal', e.target.value));
-  document.getElementById('kotor-input').addEventListener('input', e=> updateField('kotor', e.target.value));
-  document.getElementById('untung-input').addEventListener('input', e=> updateField('untung', e.target.value));
+  bindMoneyInput(document.getElementById('kotor-input'), v=> updateField('kotor', v));
+  bindMoneyInput(document.getElementById('untung-input'), v=> updateField('untung', v));
   document.getElementById('submit-btn').addEventListener('click', submitEntry);
 }
 
@@ -1697,11 +1718,11 @@ function renderAdminEntryList(container){
                 </div>
                 <div class="field">
                   <label class="field-label">Omzet (Rp)</label>
-                  <input type="number" class="edit-kotor" value="${f.kotor}">
+                  <input type="text" inputmode="numeric" autocomplete="off" class="edit-kotor" value="${formatThousands(f.kotor)}">
                 </div>
                 <div class="field">
                   <label class="field-label">Laba Bersih (Rp)</label>
-                  <input type="number" class="edit-untung" value="${f.untung}">
+                  <input type="text" inputmode="numeric" autocomplete="off" class="edit-untung" value="${formatThousands(f.untung)}">
                 </div>
                 <div class="edit-actions">
                   <button class="btn-primary" data-save="${e.id}" style="flex:1;">Simpan</button>
@@ -1745,8 +1766,8 @@ function renderAdminEntryList(container){
   container.querySelectorAll('.edit-form[data-edit-id]').forEach(form=>{
     form.querySelector('.edit-jurusan').addEventListener('change', e=> updateEditForm('jurusan', e.target.value));
     form.querySelector('.edit-tanggal').addEventListener('change', e=> updateEditForm('tanggal', e.target.value));
-    form.querySelector('.edit-kotor').addEventListener('input', e=> updateEditForm('kotor', e.target.value));
-    form.querySelector('.edit-untung').addEventListener('input', e=> updateEditForm('untung', e.target.value));
+    bindMoneyInput(form.querySelector('.edit-kotor'), v=> updateEditForm('kotor', v));
+    bindMoneyInput(form.querySelector('.edit-untung'), v=> updateEditForm('untung', v));
   });
 }
 
